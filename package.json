@@ -1,0 +1,35 @@
+{
+  "name": "pig",
+  "version": "1.0.0",
+  "description": "Programs Input Generator - A web application for generating input data for computer science problems",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "nodemon backend/src/server.js",
+    "setup-db": "node backend/src/database/setup.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.11.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.31.1",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^3.1.10",
+    "stylelint": "^15.6.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+}
