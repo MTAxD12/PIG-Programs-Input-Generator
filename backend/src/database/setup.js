@@ -4,9 +4,15 @@ const GeneratedData = require('../models/GeneratedData');
 
 async function initializeDatabase() {
     try {
-        await sequelize.sync({ force: true });
-        console.log('Database synchronized successfully');
+        // Sincronizăm mai întâi User
+        await User.sync({ force: true });
+        console.log('Users table created successfully');
 
+        // Apoi sincronizăm GeneratedData
+        await GeneratedData.sync({ force: true });
+        console.log('GeneratedData table created successfully');
+
+        // Creăm utilizatorul admin
         await User.create({
             username: 'admin',
             email: 'admin@pig.com',

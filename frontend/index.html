@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:* ws://localhost:*; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:* ws://localhost:*;">
     <title>PIG - Programs Input Generator</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -11,12 +12,12 @@
         <nav class="main-nav">
             <div class="logo">PIG</div>
             <ul class="nav-links">
-                <li><a href="#" class="nav-link" data-page="home">Home</a></li>
-                <li><a href="#" class="nav-link" data-page="numbers">Numbers</a></li>
-                <li><a href="#" class="nav-link" data-page="matrices">Matrices</a></li>
-                <li><a href="#" class="nav-link" data-page="strings">Strings</a></li>
-                <li><a href="#" class="nav-link" data-page="graphs">Graphs</a></li>
-                <li><a href="#" class="nav-link" data-page="history">History</a></li>
+                <li><a href="/" class="nav-link" data-page="home">Home</a></li>
+                <li><a href="/numbers" class="nav-link" data-page="numbers">Numbers</a></li>
+                <li><a href="/matrices" class="nav-link" data-page="matrices">Matrices</a></li>
+                <li><a href="/strings" class="nav-link" data-page="strings">Strings</a></li>
+                <li><a href="/graphs" class="nav-link" data-page="graphs">Graphs</a></li>
+                <li><a href="/history" class="nav-link" data-page="history">History</a></li>
             </ul>
             <div class="auth-buttons">
                 <button id="loginBtn" class="btn">Login</button>
@@ -43,11 +44,6 @@
     </footer>
 
     <script src="js/auth.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/generators/numbers.js"></script>
-    <script src="js/generators/matrices.js"></script>
-    <script src="js/generators/strings.js"></script>
-    <script src="js/generators/graphs.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html> 
