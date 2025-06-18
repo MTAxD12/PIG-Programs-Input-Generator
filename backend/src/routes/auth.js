@@ -7,9 +7,9 @@ const sequelize = require('sequelize');
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 const validateAuthRequest = (req, res, next) => {
-    const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
+    const { email, username, password } = req.body;
+    if ((!email && !username) || !password) {
+        return res.status(400).json({ error: 'Email or username and password are required' });
     }
     next();
 };
@@ -55,10 +55,15 @@ router.post('/register', validateAuthRequest, async (req, res) => {
 });
 
 router.post('/login', validateAuthRequest, async (req, res) => {
-    const { email, password } = req.body;
+    const { email, username, password } = req.body;
 
     try {
-        const user = await User.findOne({ where: { email } });
+        let user;
+        if (email) {
+            user = await User.findOne({ where: { email } });
+        } else if (username) {
+            user = await User.findOne({ where: { username } });
+        }
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }

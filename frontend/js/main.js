@@ -14,9 +14,12 @@
         }
     };
 
-    const showError = (message) => {
+    const showError = (message, isSuccess) => {
+        if (isSuccess === undefined) {
+            isSuccess = false;
+        }
         const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
+        errorDiv.className = isSuccess ? 'success-message' : 'error-message';
         errorDiv.textContent = message;
         document.body.appendChild(errorDiv);
         setTimeout(() => {
