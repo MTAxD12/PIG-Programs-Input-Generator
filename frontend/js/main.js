@@ -1,4 +1,4 @@
-    const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
     const showLoading = () => {
         const loadingDiv = document.createElement('div');
@@ -14,16 +14,29 @@
         }
     };
 
+    let currentErrorElement = null;
+
     const showError = (message, isSuccess) => {
         if (isSuccess === undefined) {
             isSuccess = false;
         }
+        
+        if (currentErrorElement) {
+            currentErrorElement.remove();
+        }
+
         const errorDiv = document.createElement('div');
         errorDiv.className = isSuccess ? 'success-message' : 'error-message';
         errorDiv.textContent = message;
         document.body.appendChild(errorDiv);
+        
+        currentErrorElement = errorDiv;
+        
         setTimeout(() => {
-            errorDiv.remove();
+            if (currentErrorElement === errorDiv) {
+                errorDiv.remove();
+                currentErrorElement = null;
+            }
         }, 5000);
     };
 
@@ -607,4 +620,4 @@
             console.error('Error deleting history item:', error);
             showError('Failed to delete history item');
         }
-    }; 
+    };

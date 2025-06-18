@@ -166,7 +166,7 @@ const auth = {
             this.hideAuthModal();
             showError('Login successful!', true);
         } catch (error) {
-            showError('Login failed. Please check your credentials.');
+            showError('Login failed. Please check your credentials.', false);
         }
     },
 

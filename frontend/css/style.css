@@ -1,23 +1,25 @@
-/* resetare stiluri de baza */
+/* resetam chestiile de baza si stilurile default */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* stiluri pentru toata pagina */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f4f4f4;
 }
 
-/* header si meniul de sus */
+/* cum arata partea de sus a paginii */
 header {
     background-color: #333;
     color: white;
     padding: 1rem;
 }
 
+/* bara de navigare si cum se pozitioneaza */
 nav {
     display: flex;
     justify-content: space-between;
@@ -47,14 +49,14 @@ nav {
     gap: 1rem;
 }
 
-/* stiluri pentru formularul principal si rezultate */
+/* Continutul principal */
 main {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
-/* Form styles */
+/* Stiluri pentru formulare */
 .generator-form {
     background-color: white;
     padding: 2rem;
@@ -98,7 +100,7 @@ button:hover {
     background-color: #555;
 }
 
-/* Results styles */
+/* Stiluri pentru rezultate */
 .results-container {
     margin-top: 2rem;
     background-color: white;
@@ -114,7 +116,7 @@ pre {
     overflow-x: auto;
 }
 
-/* modalul pentru login si register */
+/* Stiluri pentru modaluri */
 .modal {
     display: none;
     position: fixed;
@@ -132,7 +134,7 @@ pre {
     padding-top: 10vh;
 }
 
-/* stiluri pentru login (modal) */
+/* STILURI MODAL PENTRU AUTENTIFICARE */
 .modal-content-login {
     background-color: #6F6F6F;
     padding: 3rem 3rem 2rem;
@@ -274,7 +276,7 @@ pre {
     font-weight: 700;
 }
 
-/* stiluri pentru register (modal) */
+/* STILURI MODAL PENTRU INREGISTRARE */
 .modal-content-register {
     background-color: #6F6F6F;
     padding: 3rem 3rem 2rem;
@@ -419,10 +421,10 @@ pre {
 }
 
 .close {
-    display: none; 
+    display: none; /* Hiding the close button as it's not in the design */
 }
 
-/* loader-ul cand se incarca ceva */
+/* Indicator de incarcare */
 .loading {
     display: none;
     position: fixed;
@@ -453,7 +455,7 @@ pre {
     100% { transform: rotate(360deg); }
 }
 
-/* notificare de eroare (rosu sus dreapta) */
+/* Notificare eroare */
 .error-notification {
     position: fixed;
     top: 1rem;
@@ -465,11 +467,12 @@ pre {
     z-index: 1000;
 }
 
-/* footer-ul nu e folosit */
+/* Stiluri pentru footer */
 footer {
     display: none;
 }
 
+/* mesajele alea care apar cand dai eroare */
 .error-message {
     position: fixed;
     top: 20px;
@@ -485,6 +488,23 @@ footer {
     word-wrap: break-word;
 }
 
+/* mesajele verzi care apar cand merge totul bine */
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #13920d;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+    word-wrap: break-word;
+}
+
+/* animatia aia faina care face mesajele sa apara din dreapta */
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -496,7 +516,7 @@ footer {
     }
 }
 
-/* istoric - pagina cu rezultate generate */
+/* containerul pentru pagina de istoric - sa stea frumos in centru */
 .history-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -574,7 +594,7 @@ footer {
     padding: 20px;
 }
 
-/* responsive login/register - pentru ecrane mici */
+/* CUM ARATA PE TELEFON */
 @media screen and (max-width: 1024px) {
     .modal-content-login {
         width: 90%;
@@ -676,7 +696,7 @@ footer {
         justify-content: flex-start;
     }
     .modal-content-login .auth-form,
-    .modal-content-register .auth-form {
+    .modal-content_register .auth-form {
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -746,72 +766,72 @@ footer {
     }
 }
 
-/* REGISTER RESPONSIVE STYLES */
+/* CUM ARATA PE TELEFON LA INREGISTRARE */
 @media screen and (max-width: 1024px) {
-    .modal-content-register {
+    .modal-content_register {
         width: 90%;
         height: auto;
         min-height: 700px;
         padding: 2.5rem 2.5rem 1.5rem;
     }
 
-    .modal-content-register .form-group {
+    .modal-content_register .form-group {
         width: 90%;
     }
 
-    .modal-content-register input {
+    .modal-content_register input {
         width: 100%;
         height: 80px;
     }
 
-    .modal-content-register h2 {
+    .modal-content_register h2 {
         font-size: 40px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .modal-content-register {
+    .modal-content_register {
         width: 95%;
         min-height: 600px;
         padding: 2rem 1.5rem 1rem;
     }
 
-    .modal-content-register .form-group {
+    .modal-content_register .form-group {
         width: 100%;
     }
 
-    .modal-content-register input {
+    .modal-content_register input {
         height: 70px;
         font-size: 28px;
     }
 
-    .modal-content-register input::placeholder {
+    .modal-content_register input::placeholder {
         font-size: 28px;
     }
 
-    .modal-content-register h2 {
+    .modal-content_register h2 {
         font-size: 36px;
         margin-bottom: 2rem;
     }
 
-    .modal-content-register label {
+    .modal-content_register label {
         font-size: 32px;
     }
 
-    .modal-content-register button[type="submit"] {
+    .modal-content_register button[type="submit"] {
         width: 280px;
         height: 70px;
         font-size: 32px;
         margin: 2rem auto 0;
     }
 
-    .modal-content-register .signup-text {
+    .modal-content_register .signup-text {
         font-size: 20px;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .modal-content-register {
+    .modal-content_register {
         width: 100%;
         min-height: 95vh;
         height: auto;
@@ -822,22 +842,22 @@ footer {
         flex-direction: column;
     }
 
-    .modal-content-register .auth-form {
+    .modal-content_register .auth-form {
         flex: 1;
         gap: 2.5rem;
         padding-bottom: 2rem;
     }
 
-    .modal-content-register h2 {
+    .modal-content_register h2 {
         font-size: 36px;
         margin-bottom: 2.5rem;
     }
 
-    .modal-content-register .form-group {
+    .modal-content_register .form-group {
         width: 100%;
     }
 
-    .modal-content-register label {
+    .modal-content_register label {
         font-size: 15px;
         margin-bottom: 0.2rem;
         white-space: nowrap;
@@ -847,7 +867,7 @@ footer {
         display: block;
     }
 
-    .modal-content-register input {
+    .modal-content_register input {
         width: 100%;
         height: 72px;
         font-size: 24px;
@@ -855,15 +875,15 @@ footer {
         padding: 1rem 1.2rem;
     }
 
-    .modal-content-register input::placeholder {
+    .modal-content_register input::placeholder {
         font-size: 24px;
     }
 
-    .modal-content-register .password-container {
+    .modal-content_register .password-container {
         width: 100%;
     }
 
-    .modal-content-register .password-toggle {
+    .modal-content_register .password-toggle {
         right: 16px;
         width: 32px;
         height: 32px;
@@ -872,12 +892,12 @@ footer {
         justify-content: center;
     }
 
-    .modal-content-register .password-toggle img {
+    .modal-content_register .password-toggle img {
         width: 28px;
         height: 28px;
     }
 
-    .modal-content-register button[type="submit"] {
+    .modal-content_register button[type="submit"] {
         width: 100%;
         max-width: 280px;
         height: 72px;
@@ -886,7 +906,7 @@ footer {
         margin: 2.5rem auto 1.5rem;
     }
 
-    .modal-content-register .signup-text {
+    .modal-content_register .signup-text {
         font-size: 22px;
         margin-top: 1.5rem;
         font-weight: 500;
@@ -894,54 +914,54 @@ footer {
 }
 
 @media screen and (max-width: 360px) {
-    .modal-content-register {
+    .modal-content_register {
         padding: 2rem 1rem;
     }
 
-    .modal-content-register h2 {
+    .modal-content_register h2 {
         font-size: 32px;
         margin-bottom: 2rem;
     }
 
-    .modal-content-register label {
+    .modal-content_register label {
         font-size: 24px;
     }
 
-    .modal-content-register input {
+    .modal-content_register input {
         height: 64px;
         font-size: 22px;
     }
 
-    .modal-content-register input::placeholder {
+    .modal-content_register input::placeholder {
         font-size: 22px;
     }
 
-    .modal-content-register button[type="submit"] {
+    .modal-content_register button[type="submit"] {
         height: 64px;
         font-size: 24px;
     }
 
-    .modal-content-register .signup-text {
+    .modal-content_register .signup-text {
         font-size: 20px;
     }
 }
 
 @media screen and (max-height: 600px) and (max-width: 480px) {
-    .modal-content-register {
+    .modal-content_register {
         min-height: 100vh;
         border-radius: 0;
     }
 
-    .modal-content-register .auth-form {
+    .modal-content_register .auth-form {
         gap: 1.5rem;
     }
 
-    .modal-content-register h2 {
+    .modal-content_register h2 {
         margin-bottom: 1.5rem;
     }
 }
 
-/* rand special pentru register (doua inputuri pe acelasi rand) */
+/* aranjam randurile din formular */
 .register-row {
     display: flex;
     gap: 2rem;
@@ -960,7 +980,7 @@ footer {
         flex-direction: column;
         gap: 1.5rem;
     }
-    .modal-content-register {
+    .modal-content_register {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }
@@ -984,132 +1004,26 @@ footer {
     padding: 2.5rem 2rem 1.5rem;
 }
 
-@media screen and (max-width: 1200px) {
-    .modal-content-login,
-    .modal-content-register {
-        max-width: 800px;
-        padding: 2rem 1.5rem 1rem;
-    }
-}
-
 @media screen and (max-width: 1024px) {
     .modal-content-login,
     .modal-content-register {
-        max-width: 600px;
-        padding: 1.5rem 1rem 1rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
 }
 
 @media screen and (max-width: 768px) {
     .modal-content-login,
     .modal-content-register {
-        max-width: 98vw;
-        padding: 1rem 0.5rem 0.5rem;
-        border-radius: 24px;
-    }
-    .register-row {
-        flex-direction: column;
-        gap: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 
 @media screen and (max-width: 480px) {
     .modal-content-login,
     .modal-content-register {
-        width: 100vw;
-        min-width: 100vw;
-        max-width: 100vw;
-        height: 100vh;
-        min-height: 100vh;
-        max-height: 100vh;
-        margin: 0;
-        padding: 2rem 0.5rem 1.5rem 0.5rem;
-        border-radius: 32px;
-        box-sizing: border-box;
-        left: 0;
-        top: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-    .modal-content-login .auth-form,
-    .modal-content-register .auth-form {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 2rem;
-        padding-bottom: 0;
-        min-height: unset;
-    }
-    .modal.show {
-        align-items: flex-start;
-        padding-top: 0;
-    }
-    .modal-content-login h2,
-    .modal-content-register h2 {
-        font-size: 24px;
-        margin-bottom: 1rem;
-    }
-    .modal-content-login label,
-    .modal-content-register label {
-        font-size: 15px;
-        margin-bottom: 0.2rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        display: block;
-    }
-    .modal-content-login input,
-    .modal-content-register input {
-        height: 48px;
-        font-size: 16px;
-        border-radius: 12px;
-        padding: 0.5rem 0.8rem;
-    }
-    .modal-content-login input::placeholder,
-    .modal-content-register input::placeholder {
-        font-size: 16px;
-    }
-    .modal-content-login button[type="submit"],
-    .modal-content-register button[type="submit"] {
-        width: 100%;
-        max-width: 200px;
-        height: 48px;
-        font-size: 18px;
-        border-radius: 24px;
-        margin: 1rem auto 0.5rem;
-    }
-    .modal-content-login .signup-text,
-    .modal-content-register .signup-text {
-        font-size: 14px;
-        margin-top: 0.5rem;
-    }
-}
-
-/* Form group and row width fix */
-.modal-content-login .form-group,
-.modal-content-register .form-group,
-.register-row {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-.input-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.input-container input {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-@media screen and (min-width: 1025px) {
-    .modal-content-register {
-        max-width: 1400px;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
 }
