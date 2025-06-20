@@ -224,16 +224,16 @@ const auth = {
         }
 
         try {
-            const response = await apiRequest('/auth/verify', {
+            const response = await apiRequest('/auth/me', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
             
-            if (response.valid) {
+            if (response) {
                 this.isAuthenticated = true;
-                this.currentUser = user;
+                this.currentUser = response;
             } else {
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
@@ -251,24 +251,20 @@ const auth = {
     },
 
     updateAuthUI() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        
         if (this.isAuthenticated) {
             this.loginBtn.style.display = 'none';
             this.registerBtn.style.display = 'none';
-            if (!document.getElementById('logoutBtn')) {
-                const logoutBtn = document.createElement('button');
-                logoutBtn.id = 'logoutBtn';
-                logoutBtn.className = 'btn';
-                logoutBtn.textContent = 'Logout';
+            logoutBtn.style.display = 'inline-flex';
+            if (!logoutBtn.hasEventListener) {
                 logoutBtn.addEventListener('click', () => this.handleLogout());
-                document.querySelector('.auth-buttons').appendChild(logoutBtn);
+                logoutBtn.hasEventListener = true;
             }
         } else {
-            this.loginBtn.style.display = 'inline-block';
-            this.registerBtn.style.display = 'inline-block';
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.remove();
-            }
+            this.loginBtn.style.display = 'inline-flex';
+            this.registerBtn.style.display = 'inline-flex';
+            logoutBtn.style.display = 'none';
         }
     }
 };
