@@ -12,19 +12,56 @@
 </head>
 <body>
     <header>
+        <a href="/" class="logo" data-page="home">
+            <img src="assets/icons/logoLeftSus.svg" alt="PIG Logo">
+            <div class="logo-text">
+                <span>Programs Input</span>
+                <span>Generator</span>
+            </div>
+        </a>
         <nav class="main-nav">
-            <div class="logo">PIG</div>
             <ul class="nav-links">
-                <li><a href="/" class="nav-link" data-page="home">Home</a></li>
-                <li><a href="/numbers" class="nav-link" data-page="numbers">Numbers</a></li>
-                <li><a href="/matrices" class="nav-link" data-page="matrices">Matrices</a></li>
-                <li><a href="/strings" class="nav-link" data-page="strings">Strings</a></li>
-                <li><a href="/graphs" class="nav-link" data-page="graphs">Graphs</a></li>
-                <li><a href="/history" class="nav-link" data-page="history">History</a></li>
+                <li>
+                    <a href="/numbers" class="nav-link" data-page="numbers">
+                        <img src="assets/icons/numbers.svg" alt="Numbers" class="numbers-icon">
+                        <span>Numbers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/matrices" class="nav-link" data-page="matrices">
+                        <img src="assets/icons/matrices.svg" alt="Matrices" class="matrices-icon">
+                        <span>Matrices</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/strings" class="nav-link" data-page="strings">
+                        <img src="assets/icons/strings.svg" alt="Strings" class="strings-icon">
+                        <span>Strings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/graphs" class="nav-link" data-page="graphs">
+                        <img src="assets/icons/graphs.svg" alt="Graphs" class="graphs-icon">
+                        <span>Graphs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/history" class="nav-link" data-page="history">
+                        <img src="assets/icons/history.svg" alt="History" class="history-icon">
+                        <span>History</span>
+                    </a>
+                </li>
             </ul>
             <div class="auth-buttons">
-                <button id="loginBtn" class="btn">Login</button>
-                <button id="registerBtn" class="btn">Register</button>
+                <button id="registerBtn" class="btn auth-btn">
+                    <img src="assets/icons/register.svg" alt="Register" class="register-icon">
+                    <span>Register</span>
+                </button>
+                <button id="loginBtn" class="btn auth-btn">
+                    <img src="assets/icons/login.svg" alt="Login" class="login-icon">
+                    <span>Login</span>
+                </button>
+                <button id="logoutBtn" class="btn" style="display: none;">Logout</button>
             </div>
         </nav>
     </header>

@@ -14,39 +14,142 @@ body {
 
 /* cum arata partea de sus a paginii */
 header {
-    background-color: #333;
+    background-color: #DDB100;
     color: white;
     padding: 1rem;
+    height: 153px;
+    display: flex;
+    align-items: center;
 }
 
-/* bara de navigare si cum se pozitioneaza */
-nav {
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: 72px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo img {
+    width: 64px;
+    height: 57.6px;
+}
+
+.logo-text {
+    color: #FAF9F6;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.main-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+    flex: 1;
+    padding: 0 2rem;
 }
 
 .nav-links {
     display: flex;
-    gap: 1rem;
+    gap: 2.75rem;
+    list-style-type: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .nav-link {
     color: white;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link img {
+    width: 32px;
+    height: 32px;
+}
+
+.nav-link span {
+    color: #FAF9F6;
+    text-align: center;
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 }
 
 .nav-link:hover {
-    background-color: #555;
-    border-radius: 4px;
+    opacity: 0.8;
 }
 
 .auth-buttons {
     display: flex;
     gap: 1rem;
+    position: absolute;
+    right: 72px;
+}
+
+.auth-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 32px;
+    border: none;
+    border-radius: 64px;
+    background: #FAF9F6;
+    cursor: pointer;
+    height: 58px;
+}
+
+.auth-btn img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.auth-btn span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#registerBtn {
+    color: #224EFF;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+#registerBtn img {
+    width: 40px;
+    height: 35px;
+}
+
+#loginBtn {
+    color: #DDB100;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+#loginBtn img {
+    width: 32px;
+    height: 34px;
 }
 
 /* Continutul principal */
@@ -1026,4 +1129,29 @@ footer {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
+}
+
+.numbers-icon {
+    width: 64px !important;
+    height: 40px !important;
+}
+
+.matrices-icon {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.strings-icon {
+    width: 64px !important;
+    height: 40px !important;
+}
+
+.graphs-icon {
+    width: 44px !important;
+    height: 40px !important;
+}
+
+.history-icon {
+    width: 44px !important;
+    height: 40px !important;
 }

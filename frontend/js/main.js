@@ -531,14 +531,11 @@ const API_BASE_URL = 'http://localhost:3000/api';
     document.addEventListener('DOMContentLoaded', () => {
         console.log('DOM Content Loaded');
         
-        document.querySelectorAll('.nav-link').forEach(link => {
+        document.querySelectorAll('.nav-link, .logo').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
-                const page = e.target.dataset.page;
-                console.log('Navigating to page:', page);
+                const page = link.dataset.page || 'home';
                 loadPage(page);
-                return false;
             });
         });
 
@@ -551,9 +548,10 @@ const API_BASE_URL = 'http://localhost:3000/api';
         initFormHandlers();
         console.log('Form handlers initialized');
 
-        const path = window.location.pathname.slice(1) || 'home';
-        console.log('Loading initial page:', path);
-        loadPage(path);
+        const path = window.location.pathname;
+        const page = path === '/' ? 'home' : path.substring(1);
+        console.log('Loading initial page:', page);
+        loadPage(page);
     });
 
     const exportData = async (type) => {

@@ -8,9 +8,9 @@ const auth = {
     isAuthenticated: false,
     currentUser: null,
 
-    init() {
+    async init() {
         this.setupEventListeners();
-        this.checkAuthStatus();
+        await this.checkAuthStatus();
     },
 
     setupEventListeners() {
@@ -178,7 +178,8 @@ const auth = {
             const confirmPassword = document.getElementById('confirmPassword').value;
 
             if (password !== confirmPassword) {
-                throw new Error('Passwords do not match');
+                showError('Passwords do not match', false);
+                return;
             }
 
             const response = await apiRequest('/auth/register', {
@@ -211,14 +212,42 @@ const auth = {
         this.updateAuthUI();
     },
 
-    checkAuthStatus() {
+    async checkAuthStatus() {
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user'));
-        if (token && user) {
-            this.isAuthenticated = true;
-            this.currentUser = user;
+        
+        if (!token || !user) {
+            this.isAuthenticated = false;
+            this.currentUser = null;
             this.updateAuthUI();
+            return;
         }
+
+        try {
+            const response = await apiRequest('/auth/verify', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.valid) {
+                this.isAuthenticated = true;
+                this.currentUser = user;
+            } else {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                this.isAuthenticated = false;
+                this.currentUser = null;
+            }
+        } catch (error) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            this.isAuthenticated = false;
+            this.currentUser = null;
+        }
+        
+        this.updateAuthUI();
     },
 
     updateAuthUI() {
@@ -244,6 +273,6 @@ const auth = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    auth.init();
+document.addEventListener('DOMContentLoaded', async () => {
+    await auth.init();
 });
