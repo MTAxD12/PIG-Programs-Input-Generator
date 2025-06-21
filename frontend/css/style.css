@@ -169,7 +169,7 @@ header {
 
 /* Continutul principal */
 main {
-    max-width: 1200px;
+    max-width: 1800px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
@@ -219,19 +219,112 @@ button:hover {
 }
 
 /* Stiluri pentru rezultate */
-.results-container {
-    margin-top: 2rem;
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+#numbersPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-pre {
-    background-color: #f8f8f8;
-    padding: 1rem;
-    border-radius: 4px;
-    overflow-x: auto;
+.results-container {
+    position: relative;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.output-container {
+    border-radius: 8px;
+    border: 2px solid #010203;
+    background: #FAF9F6;
+    width: 800px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    position: relative;
+    margin-bottom: 48px;
+    transition: height 0.3s ease;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+.output-container pre {
+    background: transparent;
+    padding: 8px 16px;
+    margin: 0;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: Ubuntu;
+    font-size: 16px;
+    line-height: 24px;
+    max-height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.output-container.expanded {
+    height: auto;
+    min-height: 40px;
+    align-items: flex-start;
+    padding-top: 0;
+}
+
+.output-container.expanded pre {
+    max-height: none;
+    padding: 8px 16px;
+    align-self: flex-start;
+    white-space: pre-wrap;
+}
+
+.vertical-separator {
+    width: 2px;
+    height: 24px;
+    flex-shrink: 0;
+    background: #DDB100;
+    margin: 8px 8px;
+    position: relative;
+    align-self: flex-start;
+}
+
+.expand-button, .retract-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #FAF9F6;
+    padding: 8px 8px;
+    z-index: 2;
+    height: 40px;
+    box-sizing: border-box;
+    min-width: 91px;
+    position: relative;
+    top: -2px;
+}
+
+.expand-button span, .retract-button span {
+    color: #000;
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.expand-button img, .retract-button img {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.retract-button img {
+    transform: rotate(180deg);
 }
 
 /* Stiluri pentru modaluri */
@@ -1169,4 +1262,329 @@ footer {
 .history-icon {
     width: 44px !important;
     height: 40px !important;
+}
+
+.welcome-title {
+    color: #010203;
+    font-family: Ubuntu;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.welcome-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.welcome-description {
+    color: #010203;
+    text-align: center;
+    font-family: Ubuntu;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin-bottom: 48px;
+}
+
+.features-grid {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 48px;
+    width: 100%;
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 72px;
+    align-items: flex-start;
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 250px;
+    text-align: center;
+}
+
+.feature-card img {
+    width: 164px;
+    height: 96px;
+    flex-shrink: 0;
+    aspect-ratio: 41/24;
+}
+
+.feature-title {
+    color: #000;
+    text-align: center;
+    font-family: Ubuntu;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.feature-description {
+    color: #010203;
+    text-align: center;
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin: 0;
+    max-width: 200px;
+}
+
+.feature-card-icon {
+    flex-shrink: 0;
+    aspect-ratio: 41/24;
+}
+
+.feature-numbers-icon {
+    width: 164px;
+    height: 96px;
+}
+
+.feature-matrices-icon {
+    width: 92px;
+    height: 92px;
+}
+
+.feature-strings-icon {
+    width: 153px;
+    height: 96px;
+}
+
+.feature-graphs-icon {
+    width: 103px;
+    height: 92px;
+}
+
+/* Numbers Page Styles */
+.numbers-title {
+    color: #010203;
+    text-align: center;
+    font-family: Ubuntu;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 16px;
+}
+
+.numbers-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0;
+    margin: 64px 0;
+    gap: 64px;
+}
+
+.numbers-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 320px;
+}
+
+.vertical-line {
+    width: 2px;
+    height: 300px;
+    background-color: #DDB100;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.numbers-properties {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 320px;
+}
+
+.input-group label {
+    color: #000;
+    text-align: left;
+    font-family: Ubuntu;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.input-group input {
+    width: 320px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 2px solid #010203;
+    background: #FAF9F6;
+    padding: 0 12px;
+}
+
+.numbers-properties h2 {
+    color: #000;
+    text-align: left;
+    font-family: Ubuntu;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 4px;
+}
+
+.property-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.property-group input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+    border-radius: 24px;
+    border: 2px solid #010203;
+    background: #FAF9F6;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+.property-group input[type="checkbox"]:checked {
+    background: #DDB100;
+    border: 2px solid #010203;
+}
+
+.property-group label {
+    color: #010203;
+    font-family: Ubuntu;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 0px;
+    margin-top: 12px;
+}
+
+.generate-btn {
+    display: block;
+    width: 206px;
+    height: 53px;
+    flex-shrink: 0;
+    border-radius: 64px;
+    background: #DDB100;
+    border: none;
+    color: #FAF9F6;
+    font-family: Ubuntu;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.generate-btn:hover {
+    background: #c49f00;
+}
+
+/* Export Button Styling */
+.export-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.export-btn {
+    display: inline-block;
+    width: 206px;
+    height: 53px;
+    flex-shrink: 0;
+    border-radius: 64px;
+    background: #DDB100;
+    border: none;
+    color: #FAF9F6;
+    font-family: Ubuntu;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.export-btn:hover {
+    background: #C49F00;
+}
+
+.export-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    background: #FAF9F6;
+    border: 2px solid #DDB100;
+    border-radius: 16px;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.export-container.active .export-dropdown {
+    display: block;
+}
+
+.export-option {
+    padding: 12px 16px;
+    color: #000;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.export-option:first-child {
+    border-radius: 14px 14px 0 0;
+}
+
+.export-option:last-child {
+    border-radius: 0 0 14px 14px;
+}
+
+.export-option:hover {
+    background: #f0f0f0;
+}
+
+/* Results Title Styling */
+.results-container .numbers-title {
+    color: #000;
+    font-family: Ubuntu;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 16px;
+    align-self: flex-start;
 }

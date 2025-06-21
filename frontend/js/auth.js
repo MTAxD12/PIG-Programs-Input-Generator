@@ -202,6 +202,11 @@ const auth = {
         this.currentUser = null;
         this.updateAuthUI();
         showError('Logged out successfully', true);
+        
+        const currentPath = window.location.pathname;
+        if (currentPath === '/' || currentPath === '/home') {
+            loadPage('home');
+        }
     },
 
     setAuthState(token, user) {
@@ -210,6 +215,11 @@ const auth = {
         this.isAuthenticated = true;
         this.currentUser = user;
         this.updateAuthUI();
+        
+        const currentPath = window.location.pathname;
+        if (currentPath === '/' || currentPath === '/home') {
+            loadPage('home');
+        }
     },
 
     async checkAuthStatus() {
@@ -248,6 +258,11 @@ const auth = {
         }
         
         this.updateAuthUI();
+        
+        const currentPath = window.location.pathname;
+        if (currentPath === '/' || currentPath === '/home') {
+            loadPage('home');
+        }
     },
 
     updateAuthUI() {
