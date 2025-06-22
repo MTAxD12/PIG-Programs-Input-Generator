@@ -31,6 +31,15 @@ window.loadPage = async (pageName) => {
     try {
         const content = document.getElementById('content');
         
+        // Update active navigation item
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            const linkPage = link.getAttribute('href').replace('/', '');
+            if ((pageName === '' && linkPage === 'home') || linkPage === pageName) {
+                link.classList.add('active');
+            }
+        });
+        
         if (pageName === 'home') {
             history.pushState({ page: pageName }, '', '/');
         } else {
@@ -72,9 +81,9 @@ window.loadPage = async (pageName) => {
             case 'numbers':
                 content.innerHTML = `
                     <div id="numbersPage" class="page-content">
-                        <h1 class="numbers-title">Number Sequence Generator</h1>
-                        <div class="numbers-container">
-                            <div class="numbers-inputs">
+                        <h1 class="page-title">Number Sequence Generator</h1>
+                        <div class="generator-container">
+                            <div class="generator-inputs">
                                 <div class="input-group">
                                     <label for="length">Length</label>
                                     <input type="number" id="length" name="length">
@@ -89,7 +98,7 @@ window.loadPage = async (pageName) => {
                                 </div>
                             </div>
                             <div class="vertical-line"></div>
-                            <div class="numbers-properties">
+                            <div class="generator-properties">
                                 <h2>Properties</h2>
                                 <div class="property-group">
                                     <input type="checkbox" id="sorted" name="property" value="sorted">
@@ -115,7 +124,7 @@ window.loadPage = async (pageName) => {
                         </div>
                         <button id="generateNumbers" class="generate-btn">Generate</button>
                         <div class="results-container" style="display: none;">
-                            <h3 class="numbers-title">Generated sequence</h3>
+                            <h1 class="page-title">Generated sequence</h1>
                             <div class="output-container">
                                 <pre id="numberResults"></pre>
                                 <div class="vertical-separator"></div>
@@ -141,43 +150,63 @@ window.loadPage = async (pageName) => {
                 break;
             case 'matrices':
                 content.innerHTML = `
-                    <div class="generator-form">
-                        <h2>Matrix Generator</h2>
-                        <form id="matrixGeneratorForm">
-                            <div class="form-row">
-                                <div class="form-group">
+                    <div id="matricesPage" class="page-content">
+                        <h1 class="page-title">Matrix Generator</h1>
+                        <div class="generator-container">
+                            <div class="generator-inputs">
+                                <div class="input-group">
                                     <label for="rows">Rows</label>
-                                    <input type="number" id="rows" min="1" required>
+                                    <input type="number" id="rows" name="rows">
                                 </div>
-                                <div class="form-group">
-                                    <label for="cols">Columns</label>
-                                    <input type="number" id="cols" min="1" required>
+                                <div class="input-group">
+                                    <label for="columns">Columns</label>
+                                    <input type="number" id="columns" name="columns">
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="min">Minimum Value</label>
-                                    <input type="number" id="min" required>
+                                <div class="input-group">
+                                    <label for="minValue">Minimum Value</label>
+                                    <input type="number" id="minValue" name="minValue">
                                 </div>
-                                <div class="form-group">
-                                    <label for="max">Maximum Value</label>
-                                    <input type="number" id="max" required>
+                                <div class="input-group">
+                                    <label for="maxValue">Maximum Value</label>
+                                    <input type="number" id="maxValue" name="maxValue">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="properties">Properties</label>
-                                <select id="properties" multiple>
-                                    <option value="symmetric">Symmetric</option>
-                                    <option value="diagonal">Diagonal</option>
-                                </select>
+                            <div class="vertical-line"></div>
+                            <div class="generator-properties">
+                                <h2>Properties</h2>
+                                <div class="property-group">
+                                    <input type="checkbox" id="symmetrical" name="property" value="symmetrical">
+                                    <label for="symmetrical">Symmetrical</label>
+                                </div>
+                                <div class="property-group">
+                                    <input type="checkbox" id="diagonal" name="property" value="diagonal">
+                                    <label for="diagonal">Diagonal</label>
+                                </div>
                             </div>
-                            <button type="submit" class="btn">Generate</button>
-                        </form>
-                    </div>
-                    <div class="results-container" style="display: none;">
-                        <h3>Generated Matrix</h3>
-                        <pre id="matrixResults"></pre>
-                        <button class="btn" onclick="exportData('matrix')">Export</button>
+                        </div>
+                        <button id="generateMatrices" class="generate-btn">Generate</button>
+                        <div class="results-container" style="display: none;">
+                            <h1 class="page-title">Generated matrix</h1>
+                            <div class="output-container">
+                                <pre id="matricesResults"></pre>
+                                <div class="vertical-separator"></div>
+                                <div class="expand-button">
+                                    <img src="assets/icons/expand.svg" alt="Expand" />
+                                    <span>Expand</span>
+                                </div>
+                                <div class="retract-button" style="display: none;">
+                                    <img src="assets/icons/retract.svg" alt="Retract" />
+                                    <span>Retract</span>
+                                </div>
+                            </div>
+                            <div class="export-container">
+                                <button class="export-btn">Export</button>
+                                <div class="export-dropdown">
+                                    <div class="export-option">CSV</div>
+                                    <div class="export-option">JSON</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 break;
@@ -256,13 +285,6 @@ window.loadPage = async (pageName) => {
             default:
                 content.innerHTML = '<h2>Page not found</h2>';
         }
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.dataset.page === pageName) {
-                link.classList.add('active');
-            }
-        });
 
         initFormHandlers();
 
@@ -375,6 +397,19 @@ const validateNumberForm = (formData) => {
     return true;
 };
 
+const validateMatrixForm = (formData) => {
+    const { rows, columns, min, max } = formData;
+    if (!rows || !columns || !min || !max) {
+        throw new Error('All fields are required');
+    }
+    if (rows < 1 || columns < 1) {
+        throw new Error('Matrix dimensions must be positive');
+    }
+    if (Number(min) > Number(max)) {
+        throw new Error('Minimum value cannot be greater than maximum value');
+    }
+};
+
 const initFormHandlers = () => {
     const generateNumbersBtn = document.getElementById('generateNumbers');
     if (generateNumbersBtn) {
@@ -464,7 +499,6 @@ const initFormHandlers = () => {
                             document.body.appendChild(a);
                             a.click();
                             window.URL.revokeObjectURL(url);
-                            a.remove();
                             
                             exportContainer.classList.remove('active');
                         });
@@ -676,23 +710,105 @@ const initFormHandlers = () => {
             }
         });
     });
+
+    document.addEventListener('click', async (e) => {
+        if (e.target.id === 'generateMatrices') {
+            try {
+                const formData = {
+                    rows: document.getElementById('rows').value,
+                    columns: document.getElementById('columns').value,
+                    min: document.getElementById('minValue').value,
+                    max: document.getElementById('maxValue').value,
+                    properties: Array.from(document.querySelectorAll('#matricesPage input[type="checkbox"]:checked')).map(cb => cb.value)
+                };
+
+                validateMatrixForm(formData);
+                showLoading();
+
+                const response = await apiRequest('/generators/matrices/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const resultsContainer = document.querySelector('#matricesPage .results-container');
+                const resultsElement = document.getElementById('matricesResults');
+                
+                if (response.data) {
+                    resultsElement.textContent = response.data.map(row => row.join(' ')).join('\n');
+                    resultsContainer.style.display = 'block';
+                    
+                    // Initialize expand/retract functionality
+                    const outputContainer = resultsContainer.querySelector('.output-container');
+                    const expandButton = outputContainer.querySelector('.expand-button');
+                    const retractButton = outputContainer.querySelector('.retract-button');
+                    
+                    expandButton.addEventListener('click', () => {
+                        outputContainer.classList.add('expanded');
+                        expandButton.style.display = 'none';
+                        retractButton.style.display = 'flex';
+                    });
+                    
+                    retractButton.addEventListener('click', () => {
+                        outputContainer.classList.remove('expanded');
+                        expandButton.style.display = 'flex';
+                        retractButton.style.display = 'none';
+                    });
+
+                    // Initialize export functionality
+                    const exportContainer = resultsContainer.querySelector('.export-container');
+                    const exportButton = exportContainer.querySelector('.export-btn');
+                    const exportDropdown = exportContainer.querySelector('.export-dropdown');
+                    
+                    exportButton.addEventListener('click', () => {
+                        exportContainer.classList.toggle('active');
+                    });
+                    
+                    exportContainer.querySelectorAll('.export-option').forEach(option => {
+                        option.addEventListener('click', () => {
+                            const format = option.textContent.toLowerCase();
+                            exportData('matrices', format, response.data);
+                            exportContainer.classList.remove('active');
+                        });
+                    });
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+    });
 };
 
-const exportData = async (type) => {
-    try {
-        const data = document.getElementById(`${type}Results`).textContent;
-        const blob = new Blob([data], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${type}_generated_${Date.now()}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-    } catch (error) {
-        showError('Failed to export data');
+const exportData = async (type, format, data) => {
+    let content = '';
+    let filename = '';
+    
+    if (type === 'matrices') {
+        if (format === 'csv') {
+            content = data.map(row => row.join(',')).join('\n');
+            filename = 'matrix.csv';
+        } else if (format === 'json') {
+            content = JSON.stringify(data, null, 2);
+            filename = 'matrix.json';
+        }
+    } else if (type === 'numbers') {
+        // ... existing code for numbers ...
     }
+    
+    // Create and trigger download
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
 };
 
 const loadHistory = async () => {

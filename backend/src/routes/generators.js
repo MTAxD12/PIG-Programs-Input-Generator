@@ -311,32 +311,42 @@ router.post('/numbers/generate', verifyToken, async (req, res) => {
 
 router.post('/matrices/generate', verifyToken, async (req, res) => {
     try {
-        const { rows, cols, min, max, properties } = req.body;
+        const { rows, columns, min, max, properties } = req.body;
 
-        if (!rows || !cols || min === undefined || max === undefined) {
+        if (!rows || !columns || !min || !max) {
             return res.status(400).json({ error: 'Missing required parameters' });
         }
 
-        const matrix = generateMatrix(rows, cols, min, max, properties || []);
+        const numRows = Number(rows);
+        const numColumns = Number(columns);
+        const numMin = Number(min);
+        const numMax = Number(max);
 
-        const data = await GeneratedData.create({
-            userId: req.user.id,
-            type: 'matrix',
-            parameters: req.body,
-            result: matrix
-        });
+        if (isNaN(numRows) || isNaN(numColumns) || isNaN(numMin) || isNaN(numMax)) {
+            return res.status(400).json({ error: 'Invalid numeric parameters' });
+        }
 
-        res.json({ 
-            id: data.id, 
-            result: matrix,
-            metadata: {
-                rows: matrix.length,
-                cols: matrix[0].length,
-                properties: properties || []
-            }
-        });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+        const matrix = generateMatrix(numRows, numColumns, numMin, numMax, properties || []);
+
+        if (req.user) {
+            await GeneratedData.create({
+                userId: req.user.id,
+                type: 'matrix',
+                parameters: {
+                    rows: numRows,
+                    columns: numColumns,
+                    min: numMin,
+                    max: numMax,
+                    properties: properties || []
+                },
+                result: matrix
+            });
+        }
+
+        res.json({ data: matrix });
+    } catch (error) {
+        console.error('Error generating matrix:', error);
+        res.status(400).json({ error: error.message });
     }
 });
 
