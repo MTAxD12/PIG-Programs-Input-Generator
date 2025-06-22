@@ -31,7 +31,6 @@ window.loadPage = async (pageName) => {
     try {
         const content = document.getElementById('content');
         
-        // Update active navigation item
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
             const linkPage = link.getAttribute('href').replace('/', '');
@@ -210,64 +209,107 @@ window.loadPage = async (pageName) => {
                     </div>
                 `;
                 break;
-
             case 'strings':
                 content.innerHTML = `
-                    <div class="generator-form">
-                        <h2>String Generator</h2>
-                        <form id="stringGeneratorForm">
-                            <div class="form-group">
-                                <label for="length">Length</label>
-                                <input type="number" id="length" min="1" required>
+                    <div id="stringsPage" class="page-content">
+                        <h1 class="page-title">String Generator</h1>
+                        <div class="generator-container">
+                            <div class="generator-inputs">
+                                <div class="input-group">
+                                    <label for="length">Length</label>
+                                    <input type="number" id="length" name="length">
+                                </div>
+                                <div class="input-group">
+                                    <label for="alphabet">Alphabet</label>
+                                    <input type="text" id="alphabet" name="alphabet" placeholder="e.g., abcdefghijklmnopqrstuvwxyz">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="alphabet">Alphabet</label>
-                                <input type="text" id="alphabet" required>
+                            <div class="vertical-line"></div>
+                            <div class="generator-properties">
+                                <h2>Properties</h2>
+                                <div class="property-group">
+                                    <input type="checkbox" id="palindrome" name="property" value="palindrome">
+                                    <label for="palindrome">Palindrome</label>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="properties">Properties</label>
-                                <select id="properties" multiple>
-                                    <option value="palindrome">Palindrome</option>
-                                </select>
+                        </div>
+                        <button id="generateStrings" class="generate-btn">Generate</button>
+                        <div class="results-container" style="display: none;">
+                            <h1 class="page-title">Generated string</h1>
+                            <div class="output-container">
+                                <pre id="stringsResults"></pre>
+                                <div class="vertical-separator"></div>
+                                <div class="expand-button">
+                                    <img src="assets/icons/expand.svg" alt="Expand" />
+                                    <span>Expand</span>
+                                </div>
+                                <div class="retract-button" style="display: none;">
+                                    <img src="assets/icons/retract.svg" alt="Retract" />
+                                    <span>Retract</span>
+                                </div>
                             </div>
-                            <button type="submit" class="btn">Generate</button>
-                        </form>
-                    </div>
-                    <div class="results-container" style="display: none;">
-                        <h3>Generated String</h3>
-                        <pre id="stringResults"></pre>
-                        <button class="btn" onclick="exportData('string')">Export</button>
+                            <div class="export-container">
+                                <button class="export-btn">Export</button>
+                                <div class="export-dropdown">
+                                    <div class="export-option">TXT</div>
+                                    <div class="export-option">JSON</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
-                break;
-
+                break;                
             case 'graphs':
                 content.innerHTML = `
-                    <div class="generator-form">
-                        <h2>Graph Generator</h2>
-                        <form id="graphGeneratorForm">
-                            <div class="form-group">
-                                <label for="vertices">Number of Vertices</label>
-                                <input type="number" id="vertices" min="1" required>
+                    <div id="graphsPage" class="page-content">
+                        <h1 class="page-title">Graph Generator</h1>
+                        <div class="generator-container">
+                            <div class="generator-inputs">
+                                <div class="input-group">
+                                    <label for="nodes">Number of Nodes</label>
+                                    <input type="number" id="nodes" name="nodes" min="1" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="edges">Number of Edges</label>
+                                    <input type="number" id="edges" name="edges" min="0" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="edges">Number of Edges</label>
-                                <input type="number" id="edges" min="0" required>
+                            <div class="vertical-line"></div>
+                            <div class="generator-properties">
+                                <h2>Properties</h2>
+                                <div class="property-group">
+                                    <input type="checkbox" id="directed" name="property" value="directed">
+                                    <label for="directed">Directed</label>
+                                </div>
+                                <div class="property-group">
+                                    <input type="checkbox" id="weighted" name="property" value="weighted">
+                                    <label for="weighted">Weighted</label>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="properties">Properties</label>
-                                <select id="properties" multiple>
-                                    <option value="connected">Connected</option>
-                                    <option value="acyclic">Acyclic</option>
-                                </select>
+                        </div>
+                        <button id="generateGraphs" class="generate-btn">Generate</button>
+                        <div class="results-container" style="display: none;">
+                            <h1 class="page-title">Generated graph</h1>
+                            <div class="output-container">
+                                <pre id="graphResults"></pre>
+                                <div class="vertical-separator"></div>
+                                <div class="expand-button">
+                                    <img src="assets/icons/expand.svg" alt="Expand" />
+                                    <span>Expand</span>
+                                </div>
+                                <div class="retract-button" style="display: none;">
+                                    <img src="assets/icons/retract.svg" alt="Retract" />
+                                    <span>Retract</span>
+                                </div>
                             </div>
-                            <button type="submit" class="btn">Generate</button>
-                        </form>
-                    </div>
-                    <div class="results-container" style="display: none;">
-                        <h3>Generated Graph</h3>
-                        <pre id="graphResults"></pre>
-                        <button class="btn" onclick="exportData('graph')">Export</button>
+                            <div class="export-container">
+                                <button class="export-btn">Export</button>
+                                <div class="export-dropdown">
+                                    <div class="export-option">JSON</div>
+                                    <div class="export-option svg-export" style="display: none;">SVG</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 break;
@@ -410,6 +452,26 @@ const validateMatrixForm = (formData) => {
     }
 };
 
+const resetResultsContainer = (resultsContainer) => {
+    if (!resultsContainer) return;
+    
+    const outputContainer = resultsContainer.querySelector('.output-container');
+    const expandButton = resultsContainer.querySelector('.expand-button');
+    const retractButton = resultsContainer.querySelector('.retract-button');
+    
+    if (outputContainer) {
+        outputContainer.classList.remove('expanded');
+    }
+    
+    if (expandButton) {
+        expandButton.style.display = 'none';
+    }
+    
+    if (retractButton) {
+        retractButton.style.display = 'none';
+    }
+};
+
 const initFormHandlers = () => {
     const generateNumbersBtn = document.getElementById('generateNumbers');
     if (generateNumbersBtn) {
@@ -454,12 +516,11 @@ const initFormHandlers = () => {
                 const outputContainer = document.querySelector('.output-container');
                 
                 if (resultsContainer && resultsElement) {
+                    resetResultsContainer(resultsContainer);
                     resultsElement.textContent = response.result.join(', ');
                     resultsContainer.style.display = 'block';
                     
-                    const exportBtn = resultsContainer.querySelector('.export-btn');
-                    const exportContainer = resultsContainer.querySelector('.export-container');
-                    const exportOptions = resultsContainer.querySelectorAll('.export-option');
+                    const { exportBtn, exportContainer, exportOptions } = cleanupExportListeners(resultsContainer);
 
                     exportBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -602,25 +663,39 @@ const initFormHandlers = () => {
         };
     }
 
-    const stringForm = document.getElementById('stringGeneratorForm');
-    if (stringForm) {
-        stringForm.onsubmit = async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
+    const generateStringsBtn = document.getElementById('generateStrings');
+    if (generateStringsBtn) {
+        generateStringsBtn.onclick = async () => {
             if (!checkAuth()) return false;
             
-            console.log('String form submitted');
+            console.log('Generate strings button clicked');
             
-            const formData = {
-                length: parseInt(document.getElementById('length').value),
-                alphabet: document.getElementById('alphabet').value,
-                properties: Array.from(document.getElementById('properties').selectedOptions).map(opt => opt.value)
-            };
-
-            console.log('Sending request with data:', formData);
-
             try {
+                const lengthInput = document.getElementById('length');
+                const alphabetInput = document.getElementById('alphabet');
+                const selectedProperties = document.querySelectorAll('#stringsPage input[name="property"]:checked');
+
+                if (!lengthInput || !alphabetInput) {
+                    throw new Error('Required input fields not found');
+                }
+
+                const formData = {
+                    length: parseInt(lengthInput.value),
+                    alphabet: alphabetInput.value,
+                    properties: Array.from(selectedProperties).map(prop => prop.value)
+                };
+
+                console.log('Form data before validation:', formData);
+
+                if (!formData.length || formData.length <= 0) {
+                    throw new Error('Length must be a positive number');
+                }
+                if (!formData.alphabet || formData.alphabet.length === 0) {
+                    throw new Error('Alphabet cannot be empty');
+                }
+
+                console.log('Sending request with data:', formData);
+
                 const response = await apiRequest('/generators/strings/generate', {
                     method: 'POST',
                     body: JSON.stringify(formData)
@@ -628,71 +703,252 @@ const initFormHandlers = () => {
 
                 console.log('Received response:', response);
 
-                const resultsContainer = document.querySelector('.results-container');
-                const resultsElement = document.getElementById('stringResults');
+                const resultsContainer = document.querySelector('#stringsPage .results-container');
+                const resultsElement = document.getElementById('stringsResults');
+                const outputContainer = document.querySelector('#stringsPage .output-container');
                 
                 if (resultsContainer && resultsElement) {
+                    resetResultsContainer(resultsContainer);
                     resultsElement.textContent = response.result;
                     resultsContainer.style.display = 'block';
+                    
+                    const { exportBtn, exportContainer, exportOptions } = cleanupExportListeners(resultsContainer);
+
+                    exportBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        exportContainer.classList.toggle('active');
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!exportContainer.contains(e.target)) {
+                            exportContainer.classList.remove('active');
+                        }
+                    });
+
+                    exportOptions.forEach(option => {
+                        option.addEventListener('click', () => {
+                            const format = option.textContent;
+                            const data = response.result;
+                            
+                            let exportData;
+                            let filename;
+                            let mimeType;
+
+                            if (format === 'TXT') {
+                                exportData = data;
+                                filename = 'generated_string.txt';
+                                mimeType = 'text/plain';
+                            } else {
+                                exportData = JSON.stringify({ string: data });
+                                filename = 'generated_string.json';
+                                mimeType = 'application/json';
+                            }
+
+                            const blob = new Blob([exportData], { type: mimeType });
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            
+                            exportContainer.classList.remove('active');
+                        });
+                    });
+
+                    const expandButton = document.querySelector('#stringsPage .expand-button');
+                    const retractButton = document.querySelector('#stringsPage .retract-button');
+                    const verticalSeparator = document.querySelector('#stringsPage .vertical-separator');
+                    
+                    if (expandButton && retractButton) {
+                        const isOverflowing = resultsElement.scrollHeight > 24;
+                        
+                        if (isOverflowing) {
+                            expandButton.style.display = 'flex';
+                            const toggleExpand = () => {
+                                outputContainer.classList.toggle('expanded');
+                                if (outputContainer.classList.contains('expanded')) {
+                                    expandButton.style.display = 'none';
+                                    retractButton.style.display = 'flex';
+                                    verticalSeparator.style.display = 'flex';
+                                } else {
+                                    expandButton.style.display = 'flex';
+                                    retractButton.style.display = 'none';
+                                    verticalSeparator.style.display = 'flex';
+                                }
+                            };
+                            expandButton.onclick = toggleExpand;
+                            retractButton.onclick = toggleExpand;
+                        } else {
+                            expandButton.style.display = 'none';
+                            retractButton.style.display = 'none';
+                            verticalSeparator.style.display = 'none';
+                        }
+                    }
                 } else {
                     console.error('Results container or element not found');
                 }
             } catch (error) {
-                console.error('Error generating string:', error);
-                if (error.message.includes('401')) {
-                    showError('Session expired. Please login again.');
-                    auth.handleLogout();
-                } else {
-                    showError('Failed to generate string: ' + error.message);
-                }
+                console.error('Error:', error);
+                showError(error.message || 'Failed to generate string');
             }
             return false;
         };
     }
 
-    const graphForm = document.getElementById('graphGeneratorForm');
-    if (graphForm) {
-        graphForm.onsubmit = async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
+    const graphGenerateBtn = document.getElementById('generateGraphs');
+    if (graphGenerateBtn) {
+        graphGenerateBtn.onclick = async () => {
             if (!checkAuth()) return false;
             
-            console.log('Graph form submitted');
-            
-            const formData = {
-                vertices: parseInt(document.getElementById('vertices').value),
-                edges: parseInt(document.getElementById('edges').value),
-                properties: Array.from(document.getElementById('properties').selectedOptions).map(opt => opt.value)
-            };
-
-            console.log('Sending request with data:', formData);
-
             try {
+                const nodesInput = document.getElementById('nodes');
+                const edgesInput = document.getElementById('edges');
+                const directedCheckbox = document.getElementById('directed');
+                const weightedCheckbox = document.getElementById('weighted');
+
+                if (!nodesInput || !edgesInput) {
+                    throw new Error('Required input fields not found');
+                }
+
+                const nodes = parseInt(nodesInput.value);
+                const edges = parseInt(edgesInput.value);
+                const isDirected = directedCheckbox.checked;
+                const isWeighted = weightedCheckbox.checked;
+
+                const warnings = validateGraphInputs(nodes, edges, isDirected, isWeighted);
+
+                if (warnings.length > 0) {
+                    const warningMessage = warnings.join('\n');
+                    const proceed = confirm(`${warningMessage}\n\nDo you want to proceed anyway?`);
+                    if (!proceed) {
+                        return false;
+                    }
+                }
+
+                const formData = {
+                    nodes: nodes,
+                    edges: edges,
+                    directed: isDirected,
+                    weighted: isWeighted,
+                    properties: []
+                };
+
                 const response = await apiRequest('/generators/graphs/generate', {
                     method: 'POST',
                     body: JSON.stringify(formData)
                 });
 
-                console.log('Received response:', response);
-
-                const resultsContainer = document.querySelector('.results-container');
+                const resultsContainer = document.querySelector('#graphsPage .results-container');
                 const resultsElement = document.getElementById('graphResults');
+                const outputContainer = document.querySelector('#graphsPage .output-container');
                 
                 if (resultsContainer && resultsElement) {
+                    resetResultsContainer(resultsContainer);
                     resultsElement.textContent = JSON.stringify(response.result, null, 2);
                     resultsContainer.style.display = 'block';
-                } else {
-                    console.error('Results container or element not found');
+
+                    const expandButton = resultsContainer.querySelector('.expand-button');
+                    const retractButton = resultsContainer.querySelector('.retract-button');
+                    const verticalSeparator = resultsContainer.querySelector('.vertical-separator');
+                    
+                    if (expandButton && retractButton) {
+                        const isOverflowing = resultsElement.scrollHeight > 24;
+                        
+                        if (isOverflowing) {
+                            expandButton.style.display = 'flex';
+                            const toggleExpand = () => {
+                                outputContainer.classList.toggle('expanded');
+                                if (outputContainer.classList.contains('expanded')) {
+                                    expandButton.style.display = 'none';
+                                    retractButton.style.display = 'flex';
+                                    verticalSeparator.style.display = 'flex';
+                                } else {
+                                    expandButton.style.display = 'flex';
+                                    retractButton.style.display = 'none';
+                                    verticalSeparator.style.display = 'flex';
+                                }
+                            };
+                            expandButton.onclick = toggleExpand;
+                            retractButton.onclick = toggleExpand;
+                        } else {
+                            expandButton.style.display = 'none';
+                            retractButton.style.display = 'none';
+                            verticalSeparator.style.display = 'none';
+                        }
+                    }
+
+                    const { exportBtn, exportContainer, exportOptions } = cleanupExportListeners(resultsContainer);
+                    const svgExportOption = resultsContainer.querySelector('.svg-export');
+                    
+                    if (nodes < 10) {
+                        svgExportOption.style.display = 'block';
+                    }
+
+                    exportBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        exportContainer.classList.toggle('active');
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!exportContainer.contains(e.target)) {
+                            exportContainer.classList.remove('active');
+                        }
+                    });
+
+                    exportOptions.forEach(option => {
+                        option.addEventListener('click', async () => {
+                            const format = option.textContent;
+                            const data = response.result;
+                            
+                            let exportData;
+                            let filename;
+                            let mimeType;
+
+                            if (format === 'SVG') {
+                                try {
+                                    const token = localStorage.getItem('token');
+                                    const svgResponse = await fetch(`${API_BASE_URL}/generators/graphs/${response.id}/svg`, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`
+                                        }
+                                    });
+                                    
+                                    if (!svgResponse.ok) {
+                                        throw new Error('Failed to fetch SVG');
+                                    }
+                                    
+                                    exportData = await svgResponse.text();
+                                    filename = 'generated_graph.svg';
+                                    mimeType = 'image/svg+xml';
+                                } catch (error) {
+                                    showError('Failed to generate SVG');
+                                    return;
+                                }
+                            } else {
+                                exportData = JSON.stringify(data, null, 2);
+                                filename = 'generated_graph.json';
+                                mimeType = 'application/json';
+                            }
+
+                            const blob = new Blob([exportData], { type: mimeType });
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            
+                            exportContainer.classList.remove('active');
+                        });
+                    });
                 }
             } catch (error) {
-                console.error('Error generating graph:', error);
-                if (error.message.includes('401')) {
-                    showError('Session expired. Please login again.');
-                    auth.handleLogout();
-                } else {
-                    showError('Failed to generate graph: ' + error.message);
-                }
+                console.error('Error:', error);
+                showError(error.message || 'Failed to generate graph');
             }
             return false;
         };
@@ -737,39 +993,82 @@ const initFormHandlers = () => {
                 const resultsElement = document.getElementById('matricesResults');
                 
                 if (response.data) {
+                    resetResultsContainer(resultsContainer);
                     resultsElement.textContent = response.data.map(row => row.join(' ')).join('\n');
                     resultsContainer.style.display = 'block';
                     
-                    // Initialize expand/retract functionality
+                    const expandButton = resultsContainer.querySelector('.expand-button');
+                    const retractButton = resultsContainer.querySelector('.retract-button');
+                    const verticalSeparator = resultsContainer.querySelector('.vertical-separator');
                     const outputContainer = resultsContainer.querySelector('.output-container');
-                    const expandButton = outputContainer.querySelector('.expand-button');
-                    const retractButton = outputContainer.querySelector('.retract-button');
                     
-                    expandButton.addEventListener('click', () => {
-                        outputContainer.classList.add('expanded');
-                        expandButton.style.display = 'none';
-                        retractButton.style.display = 'flex';
-                    });
-                    
-                    retractButton.addEventListener('click', () => {
-                        outputContainer.classList.remove('expanded');
-                        expandButton.style.display = 'flex';
-                        retractButton.style.display = 'none';
-                    });
+                    if (expandButton && retractButton) {
+                        const isOverflowing = resultsElement.scrollHeight > 24;
+                        
+                        if (isOverflowing) {
+                            expandButton.style.display = 'flex';
+                            const toggleExpand = () => {
+                                outputContainer.classList.toggle('expanded');
+                                if (outputContainer.classList.contains('expanded')) {
+                                    expandButton.style.display = 'none';
+                                    retractButton.style.display = 'flex';
+                                    verticalSeparator.style.display = 'flex';
+                                } else {
+                                    expandButton.style.display = 'flex';
+                                    retractButton.style.display = 'none';
+                                    verticalSeparator.style.display = 'flex';
+                                }
+                            };
+                            expandButton.onclick = toggleExpand;
+                            retractButton.onclick = toggleExpand;
+                        } else {
+                            expandButton.style.display = 'none';
+                            retractButton.style.display = 'none';
+                            verticalSeparator.style.display = 'none';
+                        }
+                    }
 
-                    // Initialize export functionality
-                    const exportContainer = resultsContainer.querySelector('.export-container');
-                    const exportButton = exportContainer.querySelector('.export-btn');
-                    const exportDropdown = exportContainer.querySelector('.export-dropdown');
-                    
-                    exportButton.addEventListener('click', () => {
+                    const { exportBtn, exportContainer, exportOptions } = cleanupExportListeners(resultsContainer);
+
+                    exportBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         exportContainer.classList.toggle('active');
                     });
                     
-                    exportContainer.querySelectorAll('.export-option').forEach(option => {
+                    document.addEventListener('click', (e) => {
+                        if (!exportContainer.contains(e.target)) {
+                            exportContainer.classList.remove('active');
+                        }
+                    });
+
+                    exportOptions.forEach(option => {
                         option.addEventListener('click', () => {
-                            const format = option.textContent.toLowerCase();
-                            exportData('matrices', format, response.data);
+                            const format = option.textContent;
+                            const data = response.data;
+                            
+                            let exportData;
+                            let filename;
+                            let mimeType;
+
+                            if (format === 'CSV') {
+                                exportData = data.map(row => row.join(',')).join('\n');
+                                filename = 'matrix.csv';
+                                mimeType = 'text/csv';
+                            } else {
+                                exportData = JSON.stringify(data, null, 2);
+                                filename = 'matrix.json';
+                                mimeType = 'application/json';
+                            }
+
+                            const blob = new Blob([exportData], { type: mimeType });
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            
                             exportContainer.classList.remove('active');
                         });
                     });
@@ -781,6 +1080,28 @@ const initFormHandlers = () => {
             }
         }
     });
+};
+
+const cleanupExportListeners = (resultsContainer) => {
+    const exportBtn = resultsContainer.querySelector('.export-btn');
+    const exportContainer = resultsContainer.querySelector('.export-container');
+    const exportOptions = resultsContainer.querySelectorAll('.export-option');
+    
+    const newExportBtn = exportBtn.cloneNode(true);
+    exportBtn.parentNode.replaceChild(newExportBtn, exportBtn);
+    
+    exportOptions.forEach(option => {
+        const newOption = option.cloneNode(true);
+        option.parentNode.replaceChild(newOption, option);
+    });
+    
+    exportContainer.classList.remove('active');
+    
+    return {
+        exportBtn: newExportBtn,
+        exportContainer,
+        exportOptions: resultsContainer.querySelectorAll('.export-option')
+    };
 };
 
 const exportData = async (type, format, data) => {
@@ -796,10 +1117,8 @@ const exportData = async (type, format, data) => {
             filename = 'matrix.json';
         }
     } else if (type === 'numbers') {
-        // ... existing code for numbers ...
     }
     
-    // Create and trigger download
     const blob = new Blob([content], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -858,4 +1177,58 @@ const deleteHistoryItem = async (id) => {
         console.error('Error deleting history item:', error);
         showError('Failed to delete history item');
     }
+};
+
+const validateGraphInputs = (nodes, edges, isDirected, isWeighted) => {
+    if (isNaN(nodes) || nodes <= 0) {
+        throw new Error('Number of nodes must be a positive number');
+    }
+
+    if (isNaN(edges) || edges < 0) {
+        throw new Error('Number of edges must be a non-negative number');
+    }
+
+    const maxPossibleEdges = isDirected ? 
+        nodes * (nodes - 1) :         
+        (nodes * (nodes - 1)) / 2;    
+
+    const minEdgesForConnected = nodes - 1;
+
+    if (edges > maxPossibleEdges) {
+        throw new Error(
+            `Too many edges! Maximum possible edges for ${nodes} nodes in a ${isDirected ? 'directed' : 'undirected'} graph is ${maxPossibleEdges}`
+        );
+    }
+
+    const warnings = [];
+
+    if (edges < minEdgesForConnected) {
+        warnings.push(`Warning: With ${edges} edges, the graph cannot be connected (minimum ${minEdgesForConnected} needed)`);
+    }
+
+    if (nodes > 10 && isWeighted) {
+        warnings.push('Warning: Large weighted graphs might be harder to visualize');
+    }
+
+    if (nodes === 1 && edges > 0) {
+        throw new Error('A graph with 1 node cannot have any edges');
+    }
+
+    if (nodes === 2 && isDirected && edges > 2) {
+        throw new Error('A directed graph with 2 nodes cannot have more than 2 edges');
+    }
+
+    if (nodes === 2 && !isDirected && edges > 1) {
+        throw new Error('An undirected graph with 2 nodes cannot have more than 1 edge');
+    }
+
+    if (edges === maxPossibleEdges) {
+        warnings.push(`This will generate a complete ${isDirected ? 'directed' : 'undirected'} graph`);
+    }
+
+    if (edges === minEdgesForConnected && !isDirected) {
+        warnings.push('This might generate a tree-like structure (n-1 edges)');
+    }
+
+    return warnings;
 };

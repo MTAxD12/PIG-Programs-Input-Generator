@@ -381,33 +381,58 @@ router.post('/graphs/generate', verifyToken, async (req, res) => {
 
     const matrix = Array(nodes).fill().map(() => Array(nodes).fill(0));
     const edgeList = [];
+    const isDirected = Boolean(directed);
+    let currentEdges = 0;
+    let attempts = 0;
+    const maxAttempts = 1000; 
 
-    for (let i = 0; i < edges; i++) {
+    while (currentEdges < edges && attempts < maxAttempts) {
+        attempts++;
         const from = Math.floor(Math.random() * nodes);
-        let to;
-        do {
-            to = Math.floor(Math.random() * nodes);
-        } while (to === from && !directed);
+        const to = Math.floor(Math.random() * nodes);
+
+        if (from === to) {
+            continue;
+        }
+
+        if (!isDirected && matrix[from][to] !== 0) {
+            continue;
+        }
+
+        if (isDirected && matrix[from][to] !== 0) {
+            continue;
+        }
 
         const weight = weighted ? Math.floor(Math.random() * 100) + 1 : 1;
         matrix[from][to] = weight;
-        if (!directed) {
+        if (!isDirected) {
             matrix[to][from] = weight;
         }
         edgeList.push({ from, to, weight });
+        currentEdges++;
+    }
+
+    if (currentEdges < edges) {
+        return res.status(400).json({ 
+            error: 'Could not generate the requested number of edges. Try reducing the number of edges or increasing the number of nodes.' 
+        });
     }
 
     const graph = {
         nodes: Array(nodes).fill().map((_, i) => ({ id: i })),
         edges: edgeList,
-        matrix
+        matrix,
+        directed: isDirected
     };
 
     try {
         const data = await GeneratedData.create({
             userId: req.user.id,
             type: 'graph',
-            parameters: req.body,
+            parameters: {
+                ...req.body,
+                directed: isDirected
+            },
             result: graph
         });
         res.json({ id: data.id, result: graph });
@@ -416,67 +441,136 @@ router.post('/graphs/generate', verifyToken, async (req, res) => {
     }
 });
 
-router.get('/graphs/:id/svg', verifyToken, async (req, res) => {
-    const { id } = req.params;
+    router.get('/graphs/:id/svg', verifyToken, async (req, res) => {
+        const { id } = req.params;
 
-    try {
-        const data = await GeneratedData.findOne({
-            where: {
-                id: id,
-                userId: req.user.id,
-                type: 'graph'
+        try {
+            const data = await GeneratedData.findOne({
+                where: {
+                    id: id,
+                    userId: req.user.id,
+                    type: 'graph'
+                }
+            });
+
+            if (!data) {
+                return res.status(404).json({ error: 'Graph not found' });
+            }
+
+            const graph = data.result;
+            
+            if (graph.nodes.length >= 10) {
+                return res.status(400).json({ error: 'SVG export is only available for graphs with less than 10 nodes' });
+            }
+
+            const svg = generateGraphSVG(graph);
+            res.set('Content-Type', 'image/svg+xml');
+            res.send(svg);
+        } catch (err) {
+            res.status(500).json({ error: 'Error generating SVG' });
+        }
+    });
+
+    const generateGraphSVG = (graph) => {
+        const width = 600;
+        const height = 400;
+        const radius = 20;
+        const padding = 50; 
+        
+        if (!graph || !graph.nodes || !Array.isArray(graph.nodes) || graph.nodes.length === 0) {
+            return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                <text x="${width/2}" y="${height/2}" text-anchor="middle" fill="red">Invalid graph data</text>
+            </svg>`;
+        }
+        
+        const nodePositions = {};
+        const nodeCount = graph.nodes.length;
+        
+
+        graph.nodes.forEach((node, i) => {
+            const angle = (i * 2 * Math.PI) / nodeCount;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radiusX = (width - 2 * padding - 2 * radius) / 2;
+            const radiusY = (height - 2 * padding - 2 * radius) / 2;
+            
+            nodePositions[node.id] = {
+                x: centerX + radiusX * Math.cos(angle),
+                y: centerY + radiusY * Math.sin(angle)
+            };
+        });
+    
+
+        let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
+        
+        svg += `<rect width="${width}" height="${height}" fill="white" stroke="black" stroke-width="1"/>`;
+        
+        if (graph.edges && Array.isArray(graph.edges)) {
+            graph.edges.forEach(edge => {
+                const fromPos = nodePositions[edge.from];
+                const toPos = nodePositions[edge.to];
+                
+                if (fromPos && toPos) {
+                    const dx = toPos.x - fromPos.x;
+                    const dy = toPos.y - fromPos.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance > 0) {
+                        const unitX = dx / distance;
+                        const unitY = dy / distance;
+                        
+                        const startX = fromPos.x + radius * unitX;
+                        const startY = fromPos.y + radius * unitY;
+                        const endX = toPos.x - radius * unitX;
+                        const endY = toPos.y - radius * unitY;
+                        
+                        svg += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" 
+                                stroke="#333" stroke-width="2" opacity="0.8"/>`;
+                        
+                        if (graph.directed === true) { 
+                            const arrowSize = 8;
+                            const arrowX1 = endX - arrowSize * unitX - arrowSize * unitY / 2;
+                            const arrowY1 = endY - arrowSize * unitY + arrowSize * unitX / 2;
+                            const arrowX2 = endX - arrowSize * unitX + arrowSize * unitY / 2;
+                            const arrowY2 = endY - arrowSize * unitY - arrowSize * unitX / 2;
+                            
+                            svg += `<polygon points="${endX},${endY} ${arrowX1},${arrowY1} ${arrowX2},${arrowY2}" 
+                                    fill="#333" opacity="0.8"/>`;
+                        }
+                        
+                        if (edge.weight && edge.weight !== 1) {
+                            const midX = (startX + endX) / 2;
+                            const midY = (startY + endY) / 2;
+                            
+                            svg += `<circle cx="${midX}" cy="${midY}" r="12" fill="white" 
+                                    stroke="#666" stroke-width="1" opacity="0.9"/>`;
+                            svg += `<text x="${midX}" y="${midY}" text-anchor="middle" 
+                                    dominant-baseline="middle" font-size="12" font-weight="bold" fill="#d32f2f">
+                                    ${edge.weight}</text>`;
+                        }
+                    }
+                }
+            });
+        }
+    
+        graph.nodes.forEach(node => {
+            const pos = nodePositions[node.id];
+            if (pos) {
+                svg += `<circle cx="${pos.x}" cy="${pos.y}" r="${radius}" 
+                        fill="#e3f2fd" stroke="#1976d2" stroke-width="3"/>`;
+                
+                svg += `<circle cx="${pos.x + 2}" cy="${pos.y + 2}" r="${radius}" 
+                        fill="#000" opacity="0.1" style="z-index: -1"/>`;
+                
+                svg += `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" 
+                        dominant-baseline="middle" font-size="14" font-weight="bold" 
+                        fill="#1976d2">${node.id}</text>`;
             }
         });
-
-        if (!data) {
-            return res.status(404).json({ error: 'Graph not found' });
-        }
-
-        const graph = data.result;
-        const svg = generateGraphSVG(graph);
-        res.set('Content-Type', 'image/svg+xml');
-        res.send(svg);
-    } catch (err) {
-        res.status(500).json({ error: 'Database error' });
-    }
-});
-
-const generateGraphSVG = (graph) => {
-    const width = 600;
-    const height = 400;
-    const radius = 20;
-    const nodePositions = {};
-
-    graph.nodes.forEach((node, i) => {
-        const angle = (i * 2 * Math.PI) / graph.nodes.length;
-        nodePositions[node.id] = {
-            x: width/2 + (width/3) * Math.cos(angle),
-            y: height/2 + (height/3) * Math.sin(angle)
-        };
-    });
-
-    let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
-
-    graph.edges.forEach(edge => {
-        const from = nodePositions[edge.from];
-        const to = nodePositions[edge.to];
-        svg += `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" stroke="black" stroke-width="2"/>`;
-        if (edge.weight) {
-            const midX = (from.x + to.x) / 2;
-            const midY = (from.y + to.y) / 2;
-            svg += `<text x="${midX}" y="${midY}" text-anchor="middle" fill="red">${edge.weight}</text>`;
-        }
-    });
-
-    graph.nodes.forEach(node => {
-        const pos = nodePositions[node.id];
-        svg += `<circle cx="${pos.x}" cy="${pos.y}" r="${radius}" fill="white" stroke="black" stroke-width="2"/>`;
-        svg += `<text x="${pos.x}" y="${pos.y}" text-anchor="middle" dominant-baseline="middle">${node.id}</text>`;
-    });
-
-    svg += '</svg>';
-    return svg;
-};
+        
+        svg += '</svg>';
+        return svg;
+    };
 
 router.get('/numbers/:id/export', verifyToken, async (req, res) => {
     try {

@@ -277,6 +277,19 @@ button:hover {
     width: 100%;
 }
 
+#stringsPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#graphsPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 .results-container {
     position: relative;
     margin-top: 32px;
@@ -325,6 +338,8 @@ button:hover {
     min-height: 40px;
     align-items: flex-start;
     padding-top: 0;
+    max-height: 400px;           
+    overflow-y: auto;            
 }
 
 .output-container.expanded pre {
@@ -332,7 +347,12 @@ button:hover {
     padding: 8px 16px;
     align-self: flex-start;
     white-space: pre-wrap;
+    word-break: break-all;        
+    word-wrap: break-word;        
+    overflow-wrap: break-word;    
+    hyphens: auto;                
 }
+
 
 .vertical-separator {
     width: 2px;
@@ -1556,7 +1576,6 @@ footer {
     background: #DDB100;
     border: 2px solid #010203;
 }
-
 .property-group label {
     color: #010203;
     font-family: Ubuntu;
