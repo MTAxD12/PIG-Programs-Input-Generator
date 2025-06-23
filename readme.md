@@ -16,13 +16,6 @@ A modern web application for generating various types of input data for computer
 - **User Authentication**: Secure login/register system
 - **Export Options**: Multiple export formats (JSON, CSV, TXT, SVG)
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js
-- PostgreSQL
-- Git
-
 ## 🏗️ Project Structure
 
 ```
