@@ -2,6 +2,10 @@
 
 A modern web application for generating various types of input data for computer science problems and competitive programming.
 
+## 🎥 Demo
+
+**[🎬 Watch Demo on YouTube](https://www.youtube.com/watch?v=eYo0Ifwd7pQ)**
+
 ## ✨ Features
 
 - **Number Sequences**: Generate random, sorted, unique, prime, even, or odd number sequences
@@ -71,10 +75,6 @@ PIG-Programs-Input-Generator/
 ### Data Management
 - `GET /api/data` - Get user's generation history
 - `DELETE /api/data/:id` - Delete specific generated data
-
-## 🎥 Demo
-
-**[🎬 Watch Demo on YouTube](https://www.youtube.com/watch?v=eYo0Ifwd7pQ)**
 
 ## 👥 Contributors
 
