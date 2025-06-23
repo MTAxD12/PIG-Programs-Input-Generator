@@ -290,6 +290,7 @@ button:hover {
     align-items: center;
     width: 100%;
 }
+
 .results-container {
     position: relative;
     margin-top: 32px;
@@ -421,8 +422,10 @@ button:hover {
     background-color: #6F6F6F;
     padding: 3rem 3rem 2rem;
     border-radius: 64px;
-    width: 960px;
-    height: 796px;
+    width: 50%;
+    max-width: 960px;
+    height: 90vh;
+    max-height: 796px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -444,12 +447,14 @@ button:hover {
 .modal-content-login .form-group {
     margin-bottom: 0;
     position: relative;
-    width: 834px;
+    width: 100%;
+    max-width: 834px;
     flex-shrink: 0;
 }
 
 .modal-content-login input {
-    width: 834px;
+    width: 100%;
+    max-width: 834px;
     height: 88px;
     flex-shrink: 0;
     padding: 1rem 1.5rem;
@@ -563,8 +568,10 @@ button:hover {
     background-color: #6F6F6F;
     padding: 3rem 3rem 2rem;
     border-radius: 64px;
-    width: 1664px;
-    height: 800px;
+    width: 70%;
+    max-width: 1664px;
+    height: 90vh;
+    max-height: 800px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -585,11 +592,25 @@ button:hover {
     padding-bottom: 2rem;
 }
 
+.modal-content-register .register-row {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .modal-content-register .form-group {
     margin-bottom: 0;
     position: relative;
-    width: 834px;
+    width: 100%;
+    max-width: 834px;
     flex-shrink: 0;
+}
+
+.modal-content-register .register-row .form-group {
+    width: 100%;
+    max-width: 600px;
 }
 
 .modal-content-register input {
@@ -706,37 +727,6 @@ button:hover {
     display: none; /* Hiding the close button as it's not in the design */
 }
 
-/* Indicator de incarcare */
-.loading {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 50px;
-    height: 50px;
-    margin: -25px 0 0 -25px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #333;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* Notificare eroare */
 .error-notification {
     position: fixed;
@@ -805,35 +795,49 @@ footer {
     padding: 20px;
 }
 
+.history-container .export-btn
+{
+    margin-bottom: 16px;
+}
+
 .history-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 32px;
 }
 
 .history-item {
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    border: 1px solid #e5e5e5;
 }
 
 .history-item-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .history-type {
     font-weight: bold;
     color: #2c3e50;
     text-transform: capitalize;
+    font-size: 18px;
+    background: #f8f9fa;
+    padding: 4px 12px;
+    border-radius: 16px;
+    border: 1px solid #dee2e6;
 }
 
 .history-date {
     color: #7f8c8d;
-    font-size: 0.9em;
+    font-size: 14px;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .history-content {
@@ -844,471 +848,60 @@ footer {
     overflow-x: auto;
 }
 
-.history-content pre {
-    margin: 0;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+.history-title {
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .history-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
 }
 
 .btn-small {
-    padding: 5px 10px;
-    font-size: 0.9em;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+    transition: all 0.2s ease;
 }
 
 .btn-danger {
     background-color: #e74c3c;
+    color: white;
 }
 
 .btn-danger:hover {
     background-color: #c0392b;
+    transform: translateY(-1px);
 }
 
 .no-data {
     text-align: center;
     color: #7f8c8d;
     font-style: italic;
-    padding: 20px;
+    padding: 40px;
+    font-size: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #dee2e6;
 }
 
-/* CUM ARATA PE TELEFON */
-@media screen and (max-width: 1024px) {
-    .modal-content-login {
-        width: 90%;
-        height: auto;
-        min-height: 700px;
-        padding: 2.5rem 2.5rem 1.5rem;
-    }
-
-    .modal-content-login .form-group {
-        width: 90%;
-    }
-
-    .modal-content-login input {
-        width: 100%;
-        height: 80px;
-    }
-
-    .modal-content-login h2 {
-        font-size: 40px;
-    }
-
-    .modal-content-login label,
-    .modal-content-register label {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        display: block;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .modal-content-login {
-        width: 95%;
-        min-height: 600px;
-        padding: 2rem 1.5rem 1rem;
-    }
-
-    .modal-content-login .form-group {
-        width: 100%;
-    }
-
-    .modal-content-login input {
-        height: 70px;
-        font-size: 28px;
-    }
-
-    .modal-content-login input::placeholder {
-        font-size: 28px;
-    }
-
-    .modal-content-login h2 {
-        font-size: 36px;
-        margin-bottom: 2rem;
-    }
-
-    .modal-content-login label,
-    .modal-content-register label {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        display: block;
-    }
-
-    .modal-content-login label {
-        font-size: 32px;
-    }
-
-    .modal-content-login button[type="submit"] {
-        width: 280px;
-        height: 70px;
-        font-size: 32px;
-        margin: 2rem auto 0;
-    }
-
-    .modal-content-login .signup-text {
-        font-size: 20px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .modal-content-login,
-    .modal-content-register {
-        width: 100vw;
-        min-width: 100vw;
-        max-width: 100vw;
-        height: 100vh;
-        min-height: 100vh;
-        max-height: 100vh;
-        margin: 0;
-        padding: 2rem 0.5rem 1.5rem 0.5rem;
-        border-radius: 32px;
-        box-sizing: border-box;
-        left: 0;
-        top: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-    .modal-content-login .auth-form,
-    .modal-content_register .auth-form {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 2rem;
-        padding-bottom: 0;
-        min-height: unset;
-    }
-    .modal.show {
-        align-items: flex-start;
-        padding-top: 0;
-    }
-}
-
-@media screen and (max-width: 360px) {
-    .modal-content-login {
-        padding: 2rem 1rem;
-    }
-
-    .modal-content-login h2 {
-        font-size: 32px;
-        margin-bottom: 2rem;
-    }
-
-    .modal-content-login label {
-        font-size: 24px;
-    }
-
-    .modal-content-login input {
-        height: 64px;
-        font-size: 22px;
-    }
-
-    .modal-content-login input::placeholder {
-        font-size: 22px;
-    }
-
-    .modal-content-login button[type="submit"] {
-        height: 64px;
-        font-size: 24px;
-    }
-
-    .modal-content-login .signup-text {
-        font-size: 20px;
-    }
-}
-
-@media screen and (max-height: 600px) and (max-width: 480px) {
-    .modal-content-login {
-        min-height: 100vh;
-        border-radius: 0;
-    }
-
-    .modal-content-login .auth-form {
-        gap: 1.5rem;
-    }
-
-    .modal-content-login h2 {
-        margin-bottom: 1.5rem;
-    }
-}
-
-/* Pentru ecrane înalte (pentru a gestiona mai bine spațierea verticală) */
-@media screen and (min-height: 1024px) {
-    .modal.show {
-        padding-top: 25vh;
-    }
-}
-
-/* CUM ARATA PE TELEFON LA INREGISTRARE */
-@media screen and (max-width: 1024px) {
-    .modal-content_register {
-        width: 90%;
-        height: auto;
-        min-height: 700px;
-        padding: 2.5rem 2.5rem 1.5rem;
-    }
-
-    .modal-content_register .form-group {
-        width: 90%;
-    }
-
-    .modal-content_register input {
-        width: 100%;
-        height: 80px;
-    }
-
-    .modal-content_register h2 {
-        font-size: 40px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .modal-content_register {
-        width: 95%;
-        min-height: 600px;
-        padding: 2rem 1.5rem 1rem;
-    }
-
-    .modal-content_register .form-group {
-        width: 100%;
-    }
-
-    .modal-content_register input {
-        height: 70px;
-        font-size: 28px;
-    }
-
-    .modal-content_register input::placeholder {
-        font-size: 28px;
-    }
-
-    .modal-content_register h2 {
-        font-size: 36px;
-        margin-bottom: 2rem;
-    }
-
-    .modal-content_register label {
-        font-size: 32px;
-    }
-
-    .modal-content_register button[type="submit"] {
-        width: 280px;
-        height: 70px;
-        font-size: 32px;
-        margin: 2rem auto 0;
-    }
-
-    .modal-content_register .signup-text {
-        font-size: 20px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .modal-content_register {
-        width: 100%;
-        min-height: 95vh;
-        height: auto;
-        padding: 2.5rem 1.5rem;
-        border-radius: 32px;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .modal-content_register .auth-form {
-        flex: 1;
-        gap: 2.5rem;
-        padding-bottom: 2rem;
-    }
-
-    .modal-content_register h2 {
-        font-size: 36px;
-        margin-bottom: 2.5rem;
-    }
-
-    .modal-content_register .form-group {
-        width: 100%;
-    }
-
-    .modal-content_register label {
-        font-size: 15px;
-        margin-bottom: 0.2rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        display: block;
-    }
-
-    .modal-content_register input {
-        width: 100%;
-        height: 72px;
-        font-size: 24px;
-        border-radius: 20px;
-        padding: 1rem 1.2rem;
-    }
-
-    .modal-content_register input::placeholder {
-        font-size: 24px;
-    }
-
-    .modal-content_register .password-container {
-        width: 100%;
-    }
-
-    .modal-content_register .password-toggle {
-        right: 16px;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal-content_register .password-toggle img {
-        width: 28px;
-        height: 28px;
-    }
-
-    .modal-content_register button[type="submit"] {
-        width: 100%;
-        max-width: 280px;
-        height: 72px;
-        font-size: 28px;
-        border-radius: 36px;
-        margin: 2.5rem auto 1.5rem;
-    }
-
-    .modal-content_register .signup-text {
-        font-size: 22px;
-        margin-top: 1.5rem;
-        font-weight: 500;
-    }
-}
-
-@media screen and (max-width: 360px) {
-    .modal-content_register {
-        padding: 2rem 1rem;
-    }
-
-    .modal-content_register h2 {
-        font-size: 32px;
-        margin-bottom: 2rem;
-    }
-
-    .modal-content_register label {
-        font-size: 24px;
-    }
-
-    .modal-content_register input {
-        height: 64px;
-        font-size: 22px;
-    }
-
-    .modal-content_register input::placeholder {
-        font-size: 22px;
-    }
-
-    .modal-content_register button[type="submit"] {
-        height: 64px;
-        font-size: 24px;
-    }
-
-    .modal-content_register .signup-text {
-        font-size: 20px;
-    }
-}
-
-@media screen and (max-height: 600px) and (max-width: 480px) {
-    .modal-content_register {
-        min-height: 100vh;
-        border-radius: 0;
-    }
-
-    .modal-content_register .auth-form {
-        gap: 1.5rem;
-    }
-
-    .modal-content_register h2 {
-        margin-bottom: 1.5rem;
-    }
-}
-
-/* aranjam randurile din formular */
-.register-row {
-    display: flex;
-    gap: 2rem;
-    width: 100%;
-}
-
-.register-row .form-group {
-    flex: 1 1 0;
-    min-width: 0;
+.history-content pre {
     margin: 0;
-    padding: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
-@media screen and (max-width: 768px) {
-    .register-row {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-    .modal-content_register {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-}
-
-.password-container input[type="password"],
-.password-container input[type="text"] {
-    padding-right: 3rem;
-}
-
-/* General modal content responsiveness */
-.modal-content-login,
-.modal-content-register {
-    width: 100%;
-    max-width: 960px;
-    min-width: 0;
-    height: auto;
-    min-height: 0;
-    box-sizing: border-box;
-    margin: 0 auto;
-    padding: 2.5rem 2rem 1.5rem;
-}
-
-@media screen and (max-width: 1024px) {
-    .modal-content-login,
-    .modal-content-register {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .modal-content-login,
-    .modal-content-register {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .modal-content-login,
-    .modal-content-register {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-}
 
 .numbers-icon {
     width: 64px !important;

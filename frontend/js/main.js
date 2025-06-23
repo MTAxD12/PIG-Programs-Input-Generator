@@ -1140,25 +1140,268 @@ const loadHistory = async () => {
             return;
         }
 
-        historyList.innerHTML = data.map(item => `
-            <div class="history-item">
-                <div class="history-item-header">
-                    <span class="history-type">${item.type}</span>
-                    <span class="history-date">${new Date(item.createdAt).toLocaleString()}</span>
+        historyList.innerHTML = data.map(item => {
+            let formattedResult = '';
+            if (item.type === 'numbers') {
+                formattedResult = Array.isArray(item.result) ? item.result.join(', ') : JSON.stringify(item.result);
+            } else if (item.type === 'matrices') {
+                formattedResult = Array.isArray(item.result) ? 
+                    item.result.map(row => Array.isArray(row) ? row.join(' ') : row).join('\n') : 
+                    JSON.stringify(item.result);
+            } else if (item.type === 'strings') {
+                formattedResult = typeof item.result === 'string' ? item.result : JSON.stringify(item.result);
+            } else {
+                formattedResult = JSON.stringify(item.result, null, 2);
+            }
+
+            const itemId = `history-item-${item.id}`;
+            
+            return `
+                <div class="history-item">
+                    <div class="history-item-header">
+                        <span class="history-type">${item.type}</span>
+                        <span class="history-date">${new Date(item.createdAt).toLocaleString()}</span>
+                    </div>
+                    <div class="history-results-container">
+                        <h3 class="history-title">Generated ${item.type}</h3>
+                        <div class="output-container" id="output-${itemId}">
+                            <pre id="results-${itemId}">${formattedResult}</pre>
+                            <div class="vertical-separator" id="separator-${itemId}"></div>
+                            <div class="expand-button" id="expand-${itemId}" style="display: none;">
+                                <img src="assets/icons/expand.svg" alt="Expand" />
+                                <span>Expand</span>
+                            </div>
+                            <div class="retract-button" id="retract-${itemId}" style="display: none;">
+                                <img src="assets/icons/retract.svg" alt="Retract" />
+                                <span>Retract</span>
+                            </div>
+                        </div>
+                        <div class="export-container">
+                            <button class="export-btn" data-item-id="${item.id}" data-item-type="${item.type}">Export</button>
+                            <div class="export-dropdown">
+                                ${getExportOptionsForType(item.type)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="history-actions">
+                        <button class="btn btn-small btn-danger" onclick="deleteHistoryItem(${item.id})">Delete</button>
+                    </div>
                 </div>
-                <div class="history-content">
-                    <pre>${JSON.stringify(item.result, null, 2)}</pre>
-                </div>
-                <div class="history-actions">
-                    <button class="btn btn-small" onclick="exportData('${item.type}', ${item.id})">Export</button>
-                    <button class="btn btn-small btn-danger" onclick="deleteHistoryItem(${item.id})">Delete</button>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
+
+        data.forEach(item => {
+            const itemId = `history-item-${item.id}`;
+            initializeHistoryItemExpansion(itemId);
+            initializeHistoryItemExport(item);
+        });
+
     } catch (error) {
         console.error('Error loading history:', error);
         showError('Failed to load history');
     }
+};
+
+const getExportOptionsForType = (type) => {
+    switch (type) {
+        case 'numbers':
+            return `
+                <div class="export-option">CSV</div>
+                <div class="export-option">JSON</div>
+            `;
+        case 'matrix':
+            return `
+                <div class="export-option">CSV</div>
+                <div class="export-option">JSON</div>
+            `;
+        case 'string':
+            return `
+                <div class="export-option">TXT</div>
+                <div class="export-option">JSON</div>
+            `;
+        case 'graph':
+            return `
+                <div class="export-option">JSON</div>
+                <div class="export-option svg-export" style="display: none;">SVG</div>
+            `;
+        default:
+            return `<div class="export-option">JSON</div>`;
+    }
+};
+
+const initializeHistoryItemExpansion = (itemId) => {
+    const outputContainer = document.getElementById(`output-${itemId}`);
+    const resultsElement = document.getElementById(`results-${itemId}`);
+    const expandButton = document.getElementById(`expand-${itemId}`);
+    const retractButton = document.getElementById(`retract-${itemId}`);
+    const verticalSeparator = document.getElementById(`separator-${itemId}`);
+
+    if (!outputContainer || !resultsElement || !expandButton || !retractButton) {
+        return;
+    }
+
+    const isOverflowing = resultsElement.scrollHeight > 24;
+    
+    if (isOverflowing) {
+        expandButton.style.display = 'flex';
+        verticalSeparator.style.display = 'flex';
+        
+        const toggleExpand = () => {
+            outputContainer.classList.toggle('expanded');
+            if (outputContainer.classList.contains('expanded')) {
+                expandButton.style.display = 'none';
+                retractButton.style.display = 'flex';
+            } else {
+                expandButton.style.display = 'flex';
+                retractButton.style.display = 'none';
+            }
+        };
+        
+        expandButton.onclick = toggleExpand;
+        retractButton.onclick = toggleExpand;
+    } else {
+        expandButton.style.display = 'none';
+        retractButton.style.display = 'none';
+        verticalSeparator.style.display = 'none';
+    }
+};
+
+const initializeHistoryItemExport = (item) => {
+    const exportBtn = document.querySelector(`[data-item-id="${item.id}"]`);
+    const exportContainer = exportBtn.parentElement;
+    const exportOptions = exportContainer.querySelectorAll('.export-option');
+    
+    if (item.type === 'graph' && item.result && item.result.nodes && item.result.nodes.length < 10) {
+        const svgOption = exportContainer.querySelector('.svg-export');
+        if (svgOption) {
+            svgOption.style.display = 'block';
+        }
+    }
+
+    exportBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.export-container.active').forEach(container => {
+            if (container !== exportContainer) {
+                container.classList.remove('active');
+            }
+        });
+        exportContainer.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!exportContainer.contains(e.target)) {
+            exportContainer.classList.remove('active');
+        }
+    });
+
+    exportOptions.forEach(option => {
+        option.addEventListener('click', async () => {
+            const format = option.textContent.trim();
+            const data = item.result;
+            
+            let exportData;
+            let filename;
+            let mimeType;
+
+            try {
+                switch (item.type) {
+                    case 'numbers':
+                        if (format === 'CSV') {
+                            exportData = Array.isArray(data) ? data.join(',') : JSON.stringify(data);
+                            filename = `numbers_sequence_${item.id}.csv`;
+                            mimeType = 'text/csv';
+                        } else if (format === 'JSON') {
+                            exportData = JSON.stringify(data);
+                            filename = `numbers_sequence_${item.id}.json`;
+                            mimeType = 'application/json';
+                        }
+                        break;
+                        
+                    case 'matrix':
+                        if (format === 'CSV') {
+                            exportData = Array.isArray(data) ? 
+                                data.map(row => Array.isArray(row) ? row.join(',') : row).join('\n') : 
+                                JSON.stringify(data);
+                            filename = `matrix_${item.id}.csv`;
+                            mimeType = 'text/csv';
+                        } else if (format === 'JSON') {
+                            exportData = JSON.stringify(data, null, 2);
+                            filename = `matrix_${item.id}.json`;
+                            mimeType = 'application/json';
+                        }
+                        break;
+                        
+                    case 'string':
+                        if (format === 'TXT') {
+                            exportData = typeof data === 'string' ? data : JSON.stringify(data);
+                            filename = `generated_string_${item.id}.txt`;
+                            mimeType = 'text/plain';
+                        } else if (format === 'JSON') {
+                            exportData = JSON.stringify({ string: data });
+                            filename = `generated_string_${item.id}.json`;
+                            mimeType = 'application/json';
+                        }
+                        break;
+                        
+                    case 'graph':
+                        if (format === 'SVG') {
+                            try {
+                                const token = localStorage.getItem('token');
+                                const svgResponse = await fetch(`${API_BASE_URL}/generators/graphs/${item.id}/svg`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                });
+                                
+                                if (!svgResponse.ok) {
+                                    throw new Error('Failed to fetch SVG');
+                                }
+                                
+                                exportData = await svgResponse.text();
+                                filename = `generated_graph_${item.id}.svg`;
+                                mimeType = 'image/svg+xml';
+                            } catch (error) {
+                                showError('Failed to generate SVG');
+                                return;
+                            }
+                        } else if (format === 'JSON') {
+                            exportData = JSON.stringify(data, null, 2);
+                            filename = `generated_graph_${item.id}.json`;
+                            mimeType = 'application/json';
+                        }
+                        break;
+                        
+                    default:
+                        exportData = JSON.stringify(data, null, 2);
+                        filename = `data_${item.id}.json`;
+                        mimeType = 'application/json';
+                }
+
+                if (!exportData || !filename || !mimeType) {
+                    showError('Invalid export format selected');
+                    return;
+                }
+
+                const blob = new Blob([exportData], { type: mimeType });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                exportContainer.classList.remove('active');
+                showError('File exported successfully!', true);
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showError('Failed to export file');
+            }
+        });
+    });
 };
 
 const deleteHistoryItem = async (id) => {
