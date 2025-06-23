@@ -844,10 +844,10 @@ const initFormHandlers = () => {
                 const resultsElement = document.getElementById('graphResults');
                 const outputContainer = document.querySelector('#graphsPage .output-container');
                 
-                if (resultsContainer && resultsElement) {
-                    resetResultsContainer(resultsContainer);
-                    resultsElement.textContent = JSON.stringify(response.result, null, 2);
+                if (resultsContainer && resultsElement && outputContainer) {
                     resultsContainer.style.display = 'block';
+                    // Format the graph as adjacency list for display
+                    resultsElement.textContent = formatGraphAsAdjacencyList(response.result);
 
                     const expandButton = resultsContainer.querySelector('.expand-button');
                     const retractButton = resultsContainer.querySelector('.retract-button');
@@ -1150,6 +1150,8 @@ const loadHistory = async () => {
                     JSON.stringify(item.result);
             } else if (item.type === 'strings') {
                 formattedResult = typeof item.result === 'string' ? item.result : JSON.stringify(item.result);
+            } else if (item.type === 'graph') {
+                formattedResult = formatGraphAsAdjacencyList(item.result);
             } else {
                 formattedResult = JSON.stringify(item.result, null, 2);
             }
@@ -1449,10 +1451,6 @@ const validateGraphInputs = (nodes, edges, isDirected, isWeighted) => {
         warnings.push(`Warning: With ${edges} edges, the graph cannot be connected (minimum ${minEdgesForConnected} needed)`);
     }
 
-    if (nodes > 10 && isWeighted) {
-        warnings.push('Warning: Large weighted graphs might be harder to visualize');
-    }
-
     if (nodes === 1 && edges > 0) {
         throw new Error('A graph with 1 node cannot have any edges');
     }
@@ -1465,13 +1463,38 @@ const validateGraphInputs = (nodes, edges, isDirected, isWeighted) => {
         throw new Error('An undirected graph with 2 nodes cannot have more than 1 edge');
     }
 
-    if (edges === maxPossibleEdges) {
-        warnings.push(`This will generate a complete ${isDirected ? 'directed' : 'undirected'} graph`);
-    }
-
-    if (edges === minEdgesForConnected && !isDirected) {
-        warnings.push('This might generate a tree-like structure (n-1 edges)');
-    }
-
     return warnings;
+};
+
+const formatGraphAsAdjacencyList = (graph) => {
+    const adjList = new Array(graph.nodes.length).fill(null).map(() => []);
+    
+    graph.edges.forEach(edge => {
+        if (graph.directed) {
+            if (edge.weight && edge.weight !== 1) {
+                adjList[edge.from].push(`${edge.to}(${edge.weight})`);
+            } else {
+                adjList[edge.from].push(edge.to.toString());
+            }
+        } else {
+            if (edge.weight && edge.weight !== 1) {
+                adjList[edge.from].push(`${edge.to}(${edge.weight})`);
+                adjList[edge.to].push(`${edge.from}(${edge.weight})`);
+            } else {
+                adjList[edge.from].push(edge.to.toString());
+                adjList[edge.to].push(edge.from.toString());
+            }
+        }
+    });
+
+    // Sort the adjacency lists for better readability
+    adjList.forEach(list => list.sort((a, b) => {
+        const aNum = parseInt(a);
+        const bNum = parseInt(b);
+        return aNum - bNum;
+    }));
+
+    return adjList.map((neighbors, node) => 
+        `${node}: ${neighbors.join(' ')}`
+    ).join('\n');
 };
