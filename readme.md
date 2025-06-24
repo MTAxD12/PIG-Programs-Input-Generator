@@ -6,6 +6,9 @@ A modern web application for generating various types of input data for computer
 
 **[🎬 Watch Demo on YouTube](https://www.youtube.com/watch?v=eYo0Ifwd7pQ)**
 
+## 📈 Diagrama aplicatie
+![Editor___Mermaid_Chart-2025-06-23-064430](https://github.com/user-attachments/assets/fe0ca530-91b2-46af-be6f-c09ad6a6e739)
+
 ## ✨ Features
 
 - **Number Sequences**: Generate random, sorted, unique, prime, even, or odd number sequences
